@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { CATEGORIES } from "@/lib/categories";
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
@@ -14,16 +15,20 @@ export default function AdminPage() {
   const [nomeEdit, setNomeEdit] = useState("");
   const [precoEdit, setPrecoEdit] = useState("");
   const [categoriaEdit, setCategoriaEdit] = useState("");
-  const [imagemEdit, setImagemEdit] = useState<File | null>(null); // 🔹 MUDANÇA
+  const [imagemEdit, setImagemEdit] = useState<File | null>(null);
   const [descricaoEdit, setDescricaoEdit] = useState("");
+  const [homeEdit, setHomeEdit] = useState(false);           // 🔹 NOVO
+  const [produtosEdit, setProdutosEdit] = useState(true);    // 🔹 NOVO
 
   // 🔹 Estados para criação
   const [criando, setCriando] = useState(false);
   const [novoNome, setNovoNome] = useState("");
   const [novoPreco, setNovoPreco] = useState("");
   const [novaCategoria, setNovaCategoria] = useState("");
-  const [novaImagem, setNovaImagem] = useState<File | null>(null); // 🔹 MUDANÇA
+  const [novaImagem, setNovaImagem] = useState<File | null>(null);
   const [novaDescricao, setNovaDescricao] = useState("");
+  const [novoHome, setNovoHome] = useState(false);           // 🔹 NOVO
+  const [novoProdutos, setNovoProdutos] = useState(false);    // 🔹 NOVO
 
   useEffect(() => {
     fetch("/api/products")
@@ -39,9 +44,12 @@ export default function AdminPage() {
   const iniciarEdicao = (produto: any) => {
     setEditando(produto);
     setNomeEdit(produto.name);
-    setPrecoEdit(produto.price);
+    setPrecoEdit(String(produto.price));
     setCategoriaEdit(produto.category || "");
-    setImagemEdit(null); // 🔹 não carrega string, só novo upload
+    setDescricaoEdit(produto.description || "");            // 🔹 CORRIGIDO
+    setHomeEdit(Boolean(produto.showOnHome));               // 🔹 NOVO
+    setProdutosEdit(Boolean(produto.showOnProducts));       // 🔹 NOVO
+    setImagemEdit(null);
   };
 
   const salvarEdicao = async () => {
@@ -50,6 +58,8 @@ export default function AdminPage() {
     formData.append("price", precoEdit);
     formData.append("category", categoriaEdit);
     formData.append("description", descricaoEdit);
+    formData.append("showOnHome", String(homeEdit));            // 🔹 NOVO
+    formData.append("showOnProducts", String(produtosEdit));    // 🔹 NOVO
     if (imagemEdit) formData.append("image", imagemEdit);
 
     const res = await fetch(`/api/products/${editando.id}`, {
@@ -68,6 +78,8 @@ export default function AdminPage() {
     formData.append("price", novoPreco);
     formData.append("category", novaCategoria);
     formData.append("description", novaDescricao);
+    formData.append("showOnHome", String(novoHome));            // 🔹 NOVO
+    formData.append("showOnProducts", String(novoProdutos));    // 🔹 NOVO
     if (novaImagem) formData.append("image", novaImagem);
 
     const res = await fetch("/api/products", {
@@ -81,6 +93,9 @@ export default function AdminPage() {
     setNovoPreco("");
     setNovaCategoria("");
     setNovaImagem(null);
+    setNovaDescricao("");
+    setNovoHome(false);        // 🔹 NOVO
+    setNovoProdutos(false);     // 🔹 NOVO
   };
 
   if (status === "loading") return <p>Carregando...</p>;
@@ -113,6 +128,8 @@ export default function AdminPage() {
             <th className="border p-2">Preço</th>
             <th className="border p-2">Categoria</th>
             <th className="border p-2">Imagem</th>
+            <th className="border p-2">Home</th>       {/* 🔹 NOVO */}
+            <th className="border p-2">Produtos</th>   {/* 🔹 NOVO */}
             <th className="border p-2">Ações</th>
           </tr>
         </thead>
@@ -128,6 +145,8 @@ export default function AdminPage() {
                   <img src={p.imageUrl} alt={p.name} className="h-16 w-16 object-cover" />
                 )}
               </td>
+              <td className="border p-2 text-center">{p.showOnHome ? "✅" : "—"}</td>
+              <td className="border p-2 text-center">{p.showOnProducts ? "✅" : "—"}</td>
               <td className="border p-2">
                 <button
                   onClick={() => iniciarEdicao(p)}
@@ -149,26 +168,39 @@ export default function AdminPage() {
 
       {/* 🔹 Modal de edição */}
       {editando && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Editar Produto</h2>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded shadow-lg flex flex-col gap-3 w-full max-w-md">
+            <h2 className="text-xl font-bold">Editar Produto</h2>
             <input
               type="text"
+              placeholder="Nome"
               value={nomeEdit}
               onChange={(e) => setNomeEdit(e.target.value)}
-              className="border p-2 mr-2"
+              className="border p-2"
             />
             <input
               type="number"
+              placeholder="Preço"
               value={precoEdit}
               onChange={(e) => setPrecoEdit(e.target.value)}
-              className="border p-2 mr-2"
+              className="border p-2"
             />
-            <input
-              type="text"
+            <select
               value={categoriaEdit}
               onChange={(e) => setCategoriaEdit(e.target.value)}
-              className="border p-2 mr-2"
+              className="border p-2"
+            >
+              <option value="">Selecione a categoria</option>
+              {CATEGORIES.map((c) => (
+                <option key={c.slug} value={c.label}>{c.label}</option>
+              ))}
+            </select>
+            <input
+              type="text"
+              placeholder="Descrição"
+              value={descricaoEdit}
+              onChange={(e) => setDescricaoEdit(e.target.value)}
+              className="border p-2"
             />
             <input
               type="file"
@@ -177,19 +209,35 @@ export default function AdminPage() {
                 const file = e.target.files?.[0];
                 if (file) setImagemEdit(file);
               }}
-              className="border p-2 mr-2"
+              className="border p-2"
             />
-            <div className="mt-4">
-              <button
-                onClick={salvarEdicao}
-                className="bg-green-500 text-white px-4 py-2 mr-2"
-              >
+
+            {/* 🔹 NOVO: onde o produto aparece */}
+            <div className="border rounded p-3 flex flex-col gap-2">
+              <p className="font-semibold text-sm">Onde exibir este produto:</p>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={produtosEdit}
+                  onChange={(e) => setProdutosEdit(e.target.checked)}
+                />
+                Página de Produtos
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={homeEdit}
+                  onChange={(e) => setHomeEdit(e.target.checked)}
+                />
+                Home
+              </label>
+            </div>
+
+            <div className="flex justify-end gap-2 mt-2">
+              <button onClick={salvarEdicao} className="bg-green-500 text-white px-4 py-2">
                 Salvar
               </button>
-              <button
-                onClick={() => setEditando(null)}
-                className="bg-gray-500 text-white px-4 py-2"
-              >
+              <button onClick={() => setEditando(null)} className="bg-gray-500 text-white px-4 py-2">
                 Cancelar
               </button>
             </div>
@@ -199,30 +247,40 @@ export default function AdminPage() {
 
       {/* 🔹 Modal de criação */}
       {criando && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Adicionar Produto</h2>
-            
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded shadow-lg flex flex-col gap-3 w-full max-w-md">
+            <h2 className="text-xl font-bold">Adicionar Produto</h2>
+
             <input
               type="text"
               placeholder="Nome"
               value={novoNome}
               onChange={(e) => setNovoNome(e.target.value)}
-              className="border p-2 mr-2"
+              className="border p-2"
             />
             <input
               type="number"
               placeholder="Preço"
               value={novoPreco}
               onChange={(e) => setNovoPreco(e.target.value)}
-              className="border p-2 mr-2"
+              className="border p-2"
             />
-            <input
-              type="text"
-              placeholder="Categoria"
+            <select
               value={novaCategoria}
               onChange={(e) => setNovaCategoria(e.target.value)}
-              className="border p-2 mr-2"
+              className="border p-2"
+            >
+              <option value="">Selecione a categoria</option>
+              {CATEGORIES.map((c) => (
+                <option key={c.slug} value={c.label}>{c.label}</option>
+              ))}
+            </select>
+            <input
+              type="text"
+              placeholder="Descrição"
+              value={novaDescricao}
+              onChange={(e) => setNovaDescricao(e.target.value)}
+              className="border p-2"
             />
             <input
               type="file"
@@ -231,36 +289,41 @@ export default function AdminPage() {
                 const file = e.target.files?.[0];
                 if (file) setNovaImagem(file);
               }}
-              className="border p-2 mr-2"
+              className="border p-2"
             />
- <input
-  type="text"
-  placeholder="Descrição"
-  value={novaDescricao}
-  onChange={(e) => setNovaDescricao(e.target.value)}
-  className="border p-2 mr-2"
-/>
 
+            {/* 🔹 NOVO: onde o produto aparece */}
+            <div className="border rounded p-3 flex flex-col gap-2">
+              <p className="font-semibold text-sm">Onde exibir este produto:</p>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={novoProdutos}
+                  onChange={(e) => setNovoProdutos(e.target.checked)}
+                />
+                Página de Produtos
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={novoHome}
+                  onChange={(e) => setNovoHome(e.target.checked)}
+                />
+                Home
+              </label>
+            </div>
 
-
-
-            <div className="flex justify-end space-x-2 mt-4">
-              <button
-                onClick={criarProduto}
-                className="bg-green-500 text-white px-4 py-2 mr-2"
-              >
+            <div className="flex justify-end gap-2 mt-2">
+              <button onClick={criarProduto} className="bg-green-500 text-white px-4 py-2">
                 Salvar
               </button>
-              <button
-                onClick={() => setCriando(false)}
-                className="bg-gray-500 text-white px-4 py-2"
-              >
+              <button onClick={() => setCriando(false)} className="bg-gray-500 text-white px-4 py-2">
                 Cancelar
               </button>
             </div>
           </div>
         </div>
       )}
-    </div> // 🔹 fechamento da div principal
+    </div>
   );
 }
