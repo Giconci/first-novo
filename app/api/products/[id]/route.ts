@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import path from "path";
-import fs from "fs";
+import { put } from "@vercel/blob";
 
 // GET /api/products/:id → busca produto específico
 export async function GET(req: NextRequest, context: any) {
@@ -51,16 +50,12 @@ export async function PUT(req: NextRequest, context: any) {
     // Só troca a imagem se veio uma nova
     const file = formData.get("image") as File | null;
     if (file && file.size > 0) {
-      const buffer = Buffer.from(await file.arrayBuffer());
-
-      const uploadDir = path.join(process.cwd(), "public/uploads");
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-      }
-
-      const fileName = Date.now() + "-" + file.name;
-      fs.writeFileSync(path.join(uploadDir, fileName), buffer);
-      data.imageUrl = "/uploads/" + fileName;
+      // Envia a foto para o Vercel Blob e guarda só o link no banco
+      const blob = await put("products/" + file.name, file, {
+        access: "public",
+        addRandomSuffix: true,
+      });
+      data.imageUrl = blob.url;
     }
 
     const product = await prisma.product.update({
