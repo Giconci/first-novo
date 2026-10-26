@@ -13,7 +13,8 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { EmailCodeStep } from "@/components/EmailCodeStep";
 
 export default function LoginPage() {
   const form = useForm<LoginData>({
@@ -21,17 +22,22 @@ export default function LoginPage() {
     defaultValues: { email: "", password: "" },
   });
 
-  async function onSubmit(data: LoginData) {
-    const result = await signIn("credentials", {
-      redirect: false,
-      email: data.email,
-      password: data.password,
-    });
+  // Quando email e senha estão certos, guardamos aqui e mostramos a etapa do código
+  const [pending, setPending] = useState<{ data: LoginData; message: string } | null>(null);
 
-    if (result?.error) {
-      form.setError("email", { message: "Email ou senha inválidos" });
+  // 1ª etapa: confere email e senha e manda o código pro email
+  async function onSubmit(data: LoginData) {
+    const res = await fetch("/api/login-code", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const result = await res.json();
+
+    if (!res.ok) {
+      form.setError("email", { message: result.error ?? "Email ou senha inválidos" });
     } else {
-      window.location.href = "/admin";
+      setPending({ data, message: result.message });
     }
   }
 
@@ -42,6 +48,14 @@ export default function LoginPage() {
           <h2 className="text-xl font-bold">Login</h2>
         </CardHeader>
         <CardContent>
+          {pending ? (
+            <EmailCodeStep
+              email={pending.data.email}
+              password={pending.data.password}
+              redirectTo="/admin"
+              initialNotice={pending.message}
+            />
+          ) : (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
@@ -75,6 +89,7 @@ export default function LoginPage() {
               </Button>
             </form>
           </Form>
+          )}
         </CardContent>
       </Card>
     </div>

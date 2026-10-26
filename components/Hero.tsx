@@ -92,7 +92,7 @@ export default function Hero() {
       {/* 🔹 Overlay com texto centralizado */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-white bg-black/30">
         <h1 className="text-3xl md:text-5xl font-bold">Bem-vindo à nossa loja</h1>
-        <p className="mt-2 text-lg md:text-xl">Roupas, Tênis e Cadarços</p>
+        <p className="mt-2 text-lg md:text-xl">loja Conci</p>
       </div>
     </div>
   );

@@ -14,6 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { registerUser } from "@/lib/auth"; // 👈 agora usamos o service
+import { useState } from "react";
+import { EmailCodeStep } from "@/components/EmailCodeStep";
 
 export default function RegisterPage() {
   const form = useForm<RegisterData>({
@@ -27,11 +29,14 @@ export default function RegisterPage() {
     },
   });
 
+  // Depois do cadastro, guardamos os dados e mostramos a etapa do código
+  const [pending, setPending] = useState<{ data: RegisterData; message: string } | null>(null);
+
   async function onSubmit(data: RegisterData) {
     try {
       const result = await registerUser(data.name, data.email, data.password);
       console.log("Resposta do backend:", result);
-      alert(result.message); // "Usuário cadastrado!"
+      setPending({ data, message: result.message }); // "Cadastro feito! Enviamos um código..."
     } catch (err: any) {
       console.error(err);
       alert("Falha no cadastro: " + err.message);
@@ -45,6 +50,14 @@ export default function RegisterPage() {
           <h2 className="text-xl font-bold">Cadastro</h2>
         </CardHeader>
         <CardContent>
+          {pending ? (
+            <EmailCodeStep
+              email={pending.data.email}
+              password={pending.data.password}
+              redirectTo="/"
+              initialNotice={pending.message}
+            />
+          ) : (
           <Form {...form}>
             <div className="space-y-4">
               <FormField
@@ -95,6 +108,7 @@ export default function RegisterPage() {
               </Button>
             </div>
           </Form>
+          )}
         </CardContent>
       </Card>
     </div>
