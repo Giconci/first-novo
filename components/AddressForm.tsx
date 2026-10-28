@@ -49,6 +49,32 @@ export function AddressForm({ onSubmit, loading }: Props) {
       .catch(() => {}) // sem endereço anterior: formulário em branco
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // CEP completo (8 números)? Busca rua, bairro, cidade e UF no ViaCEP.
+  // ViaCEP: serviço gratuito dos Correios/comunidade, sem chave. Se falhar,
+  // o cliente só digita o endereço na mão.
+  async function buscarCep(valor: string) {
+    const cep = valor.replace(/\D/g, "")
+    if (cep.length !== 8) return
+
+    try {
+      const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      const data = await res.json()
+      if (data.erro) {
+        form.setError("cep", { message: "CEP não encontrado" })
+        return
+      }
+      form.clearErrors("cep")
+      // Só preenche o que veio (alguns CEPs de cidade pequena não têm rua/bairro)
+      if (data.logradouro) form.setValue("street", data.logradouro, { shouldValidate: true })
+      if (data.bairro) form.setValue("district", data.bairro, { shouldValidate: true })
+      form.setValue("city", data.localidade, { shouldValidate: true })
+      form.setValue("state", data.uf, { shouldValidate: true })
+      form.setFocus("number") // próximo campo que falta
+    } catch {
+      // sem internet ou ViaCEP fora do ar: segue digitando na mão
+    }
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 text-left">
@@ -64,7 +90,15 @@ export function AddressForm({ onSubmit, loading }: Props) {
                 <FormItem className={f.span}>
                   <FormLabel>{f.label}</FormLabel>
                   <FormControl>
-                    <Input placeholder={f.placeholder} {...field} value={field.value ?? ""} />
+                    <Input
+                      placeholder={f.placeholder}
+                      {...field}
+                      value={field.value ?? ""}
+                      onChange={(e) => {
+                        field.onChange(e)
+                        if (f.name === "cep") buscarCep(e.target.value)
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

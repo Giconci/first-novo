@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { CATEGORIES } from "@/lib/categories";
 
 export default function AdminPage() {
@@ -119,6 +120,10 @@ export default function AdminPage() {
       >
         Novo Produto
       </button>
+
+      <Link href="/admin/pedidos" className="ml-2 border px-4 py-2 mt-4 inline-block">
+        Ver pedidos
+      </Link>
 
       <table className="w-full border mt-6">
         <thead>

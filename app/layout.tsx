@@ -44,9 +44,13 @@ function NavBar() {
             Olá {session.user?.role === "admin" ? "Administrador" : session.user?.name}
           </span>
 
-          {session.user?.role === "admin" && (
+          {session.user?.role === "admin" ? (
             <Link href="/admin" className="px-2 py-1 rounded hover:bg-gray-100">
               Admin
+            </Link>
+          ) : (
+            <Link href="/meus-pedidos" className="px-2 py-1 rounded hover:bg-gray-100">
+              Meus pedidos
             </Link>
           )}
 
