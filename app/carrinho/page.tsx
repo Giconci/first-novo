@@ -116,7 +116,7 @@ export default function CarrinhoPage() {
                   </Link>
                   <Link
                     href="/login?callbackUrl=/carrinho"
-                    className={buttonVariants({ className: "bg-blue-600 text-white hover:bg-blue-700" })}
+                    className={buttonVariants({ className: "bg-petroleo text-white hover:bg-petroleo-escuro" })}
                   >
                     Entrar
                   </Link>

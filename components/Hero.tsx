@@ -20,23 +20,18 @@ export default function Hero() {
       desktop: "/images/banner2-desktop.jpg",
       mobile: "/images/banner2-mobile.jpg",
     },
-    {
-      id: 3,
-      desktop: "/images/banner3-desktop.jpg",
-      mobile: "/images/banner3-mobile.jpg",
-    },
   ]);
 
   const [current, setCurrent] = useState(0);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
 
-  // 🔹 Troca o banner a cada 5 segundos
+  // 🔹 Troca o banner a cada 15 segundos (15000 milissegundos)
   useEffect(() => {
     if (banners.length > 0) {
       const interval = setInterval(() => {
         setCurrent((prev) => (prev + 1) % banners.length);
-      }, 5000);
+      }, 15000);
       return () => clearInterval(interval);
     }
   }, [banners]);

@@ -8,6 +8,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* 🎨 Cores da loja. Trocou aqui, muda no site inteiro.
+   Viram classes do Tailwind: bg-petroleo, text-petroleo-claro, border-petroleo... */
+@theme {
+  --color-petroleo: #36454F;          /* cinza petróleo (botões principais) */
+  --color-petroleo-escuro: #2B3840;   /* ao passar o mouse */
+  --color-petroleo-claro: #5F7D8C;    /* preço e "Ver Detalhes" */
+  --color-petroleo-claro-escuro: #4E6A78;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

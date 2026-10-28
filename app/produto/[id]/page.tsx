@@ -50,11 +50,11 @@ export default function ProdutoPage() {
         />
       )}
       <p className="text-gray-700 mb-2">{product.description}</p>
-      <p className="text-lg font-bold text-blue-600 mb-4">
+      <p className="text-lg font-bold text-petroleo-claro mb-4">
         R$ {product.price ? product.price.toFixed(2) : "0.00"}
       </p>
       <Button
-        className="bg-blue-600 text-white hover:bg-blue-700"
+        className="bg-petroleo text-white hover:bg-petroleo-escuro"
         onClick={() => addToCart(product)}
       >
         Adicionar ao Carrinho

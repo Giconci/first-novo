@@ -41,7 +41,7 @@ function ProductGrid({
       {products.map((product) => (
         <div
           key={product.id}
-          className="border rounded-lg p-4 shadow-sm hover:shadow-md transition flex flex-col bg-white"
+          className="border border-transparent rounded-lg p-4 flex flex-col bg-white" // borda invisível (para voltar: tire "border-transparent" e ponha "shadow-sm")
         >
           <div className="relative group">
             {product.imageUrl && (
@@ -51,10 +51,13 @@ function ProductGrid({
                 className="w-full h-48 object-cover rounded"
               />
             )}
-            <div className="absolute inset-0 bg-gray bg-opacity-40 hidden group-hover:flex items-center justify-center rounded">
+            {/* Quick Add no meio da foto:
+                celular (sem mouse) → sempre visível
+                computador (md:)    → só aparece ao passar o mouse */}
+            <div className="absolute inset-0 flex md:hidden md:group-hover:flex items-center justify-center rounded md:bg-black/20">
               <Button
                 variant="secondary"
-                className="bg-white text-black hover:bg-gray-200"
+                className="bg-white/90 text-petroleo shadow hover:bg-white"
                 onClick={() => onAdd(product)}
               >
                 Quick Add
@@ -65,12 +68,13 @@ function ProductGrid({
           <div className="mt-3">
             <h2 className="text-lg font-semibold">{product.name}</h2>
             <p className="text-sm text-muted-foreground">{product.description}</p>
-            <p className="text-lg font-bold text-blue-600 mt-2">
+            {/* Cinza petróleo claro (cores no app/globals.css) */}
+            <p className="text-lg font-bold text-petroleo-claro mt-2">
               R$ {product.price.toFixed(2)}
             </p>
 
             <Link href={`/produto/${product.id}`}>
-              <Button className="mt-2 bg-blue-600 text-white hover:bg-blue-700">
+              <Button className="mt-2 bg-petroleo-claro text-white hover:bg-petroleo-claro-escuro">
                 Ver Detalhes
               </Button>
             </Link>

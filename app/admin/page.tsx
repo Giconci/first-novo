@@ -116,7 +116,7 @@ export default function AdminPage() {
 
       <button
         onClick={() => setCriando(true)}
-        className="bg-blue-600 text-white px-4 py-2 mt-4"
+        className="bg-petroleo text-white hover:bg-petroleo-escuro px-4 py-2 mt-4"
       >
         Novo Produto
       </button>
@@ -155,7 +155,7 @@ export default function AdminPage() {
               <td className="border p-2">
                 <button
                   onClick={() => iniciarEdicao(p)}
-                  className="bg-blue-500 text-white px-2 py-1 mr-2"
+                  className="bg-petroleo-claro text-white px-2 py-1 mr-2"
                 >
                   Editar
                 </button>

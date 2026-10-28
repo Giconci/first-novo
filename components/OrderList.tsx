@@ -29,6 +29,10 @@ const STATUS: Record<string, { label: string; color: string }> = {
   cancelled: { label: "Cancelado", color: "bg-gray-100 text-gray-700" },
 }
 
+// Cor dos botões: cinza petróleo (definida no app/globals.css)
+const PETROLEO = "bg-petroleo text-white hover:bg-petroleo-escuro"
+const PETROLEO_OUTLINE = "border-petroleo text-petroleo hover:bg-petroleo/10"
+
 // Filtros do admin (o cliente sempre vê tudo dele)
 const FILTERS = [
   { value: "paid", label: "A enviar" },
@@ -82,7 +86,8 @@ export function OrderList({ admin = false }: { admin?: boolean }) {
             <Button
               key={f.value}
               size="sm"
-              variant={filter === f.value ? "default" : "outline"}
+              variant="outline"
+              className={filter === f.value ? PETROLEO : PETROLEO_OUTLINE}
               onClick={() => setFilter(f.value)}
             >
               {f.label} ({f.value === "all" ? orders.length : orders.filter((o) => o.status === f.value).length})
@@ -133,6 +138,7 @@ export function OrderList({ admin = false }: { admin?: boolean }) {
             {admin && order.status === "paid" && (
               <div className="text-right">
                 <Button
+                  className={PETROLEO}
                   disabled={saving === order.id}
                   onClick={() => changeStatus(order.id, "shipped")}
                 >
@@ -145,6 +151,7 @@ export function OrderList({ admin = false }: { admin?: boolean }) {
                 <Button
                   variant="outline"
                   size="sm"
+                  className={PETROLEO_OUTLINE}
                   disabled={saving === order.id}
                   onClick={() => changeStatus(order.id, "paid")}
                 >

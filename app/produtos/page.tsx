@@ -76,7 +76,7 @@ export default async function ProdutosPage({
             <Link
               key={p.id}
               href={`/produto/${p.id}`}
-              className="border rounded-lg p-3 hover:shadow-lg transition"
+              className="border border-transparent rounded-lg p-3" // borda invisível (para voltar: tire "border-transparent")
             >
               {p.imageUrl ? (
                 <img
