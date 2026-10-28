@@ -13,8 +13,15 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { EmailCodeStep } from "@/components/EmailCodeStep";
+import { getCallbackUrl, withCallbackUrl } from "@/lib/callbackUrl";
+
+// Para onde ir depois do login: ?callbackUrl=/carrinho volta pro carrinho.
+function afterLogin() {
+  return getCallbackUrl("/admin")
+}
 
 export default function LoginPage() {
   const form = useForm<LoginData>({
@@ -24,6 +31,10 @@ export default function LoginPage() {
 
   // Quando email e senha estão certos, guardamos aqui e mostramos a etapa do código
   const [pending, setPending] = useState<{ data: LoginData; message: string } | null>(null);
+
+  // Link "Cadastre-se" levando junto o callbackUrl (montado no navegador)
+  const [signupHref, setSignupHref] = useState("/cadastro");
+  useEffect(() => setSignupHref(withCallbackUrl("/cadastro")), []);
 
   // 1ª etapa: confere email e senha e manda o código pro email
   async function onSubmit(data: LoginData) {
@@ -52,7 +63,7 @@ export default function LoginPage() {
             <EmailCodeStep
               email={pending.data.email}
               password={pending.data.password}
-              redirectTo="/admin"
+              redirectTo={afterLogin()}
               initialNotice={pending.message}
             />
           ) : (
@@ -87,6 +98,11 @@ export default function LoginPage() {
               <Button type="submit" className="w-full">
                 Entrar
               </Button>
+
+              <p className="text-center text-sm">
+                Não tem conta?{" "}
+                <Link href={signupHref} className="underline">Cadastre-se</Link>
+              </p>
             </form>
           </Form>
           )}

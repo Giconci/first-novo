@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { put } from "@vercel/blob";
+import { requireAdmin } from "@/lib/session";
 
 // GET /api/products/:id → busca produto específico
 export async function GET(req: NextRequest, context: any) {
@@ -28,6 +29,9 @@ export async function GET(req: NextRequest, context: any) {
 
 // PUT /api/products/:id → atualiza produto (recebe FormData do admin)
 export async function PUT(req: NextRequest, context: any) {
+  const admin = await requireAdmin(); // 🔒 só admin edita
+  if (admin instanceof NextResponse) return admin;
+
   const { id } = await context.params;
   const productId = Number(id);
 
@@ -72,6 +76,9 @@ export async function PUT(req: NextRequest, context: any) {
 
 // DELETE /api/products/:id → exclui produto
 export async function DELETE(req: NextRequest, context: any) {
+  const admin = await requireAdmin(); // 🔒 só admin exclui
+  if (admin instanceof NextResponse) return admin;
+
   const { id } = await context.params;
   const productId = Number(id);
 

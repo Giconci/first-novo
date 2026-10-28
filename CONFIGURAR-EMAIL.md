@@ -65,17 +65,13 @@ O `.env` não vai para o GitHub (está no `.gitignore`).
 `Ctrl+C` → `npm run dev` → cadastre um email seu → o código deve **chegar na caixa de entrada**
 (confira o spam). O email aparece na pasta **Enviados** da conta da loja.
 
-### 4. Trocar o admin para um email real
-Hoje o admin é `admin@teste.com` (não existe) — com código no login, o código dele não chega
-em lugar nenhum. Em `prisma/seed.ts`, troque pelos seus dados:
-```ts
-await prisma.user.upsert({
-  where: { email: "SEU-EMAIL-REAL" },
-  update: { passwordHash, role: "admin" },
-  create: { name: "Admin", email: "SEU-EMAIL-REAL", passwordHash, role: "admin" },
-});
+### 4. Definir o admin
+O admin vem do `.env` (nada fica escrito no código):
 ```
-Troque também `senha123` por uma senha forte (o seed vai para o GitHub). Depois: `npx prisma db seed`.
+ADMIN_EMAIL=email-do-admin@gmail.com
+ADMIN_PASSWORD=uma-senha-forte-de-12-ou-mais
+```
+Depois: `npx prisma db seed`. O seed cria/atualiza esse admin e transforma qualquer outro admin em cliente.
 
 ### 5. Produção (Vercel) — só quando tudo funcionar local
 1. Vercel → projeto → **Settings → Environment Variables**: adicione `GMAIL_USER` e `GMAIL_APP_PASSWORD`

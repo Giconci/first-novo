@@ -15,6 +15,72 @@ type Product = {
   category: string;
 };
 
+// 🔹 As duas vitrines da home. Para trocar os produtos em destaque,
+// mude só a categoria (nome igual ao do admin, ver lib/categories.ts) e o título aqui.
+const HOME_SECTIONS = {
+  top: { category: "Boné", title: "Bonés" },
+  bottom: { category: "Camiseta", title: "Camisetas" },
+};
+
+const sameCategory = (a: string | null | undefined, b: string) =>
+  (a ?? "").toLowerCase() === b.toLowerCase();
+
+function ProductGrid({
+  products,
+  onAdd,
+}: {
+  products: Product[];
+  onAdd: (product: Product) => void;
+}) {
+  if (products.length === 0) {
+    return <p className="text-gray-500">Novidades em breve.</p>;
+  }
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {products.map((product) => (
+        <div
+          key={product.id}
+          className="border rounded-lg p-4 shadow-sm hover:shadow-md transition flex flex-col bg-white"
+        >
+          <div className="relative group">
+            {product.imageUrl && (
+              <img
+                src={product.imageUrl}
+                alt={product.name}
+                className="w-full h-48 object-cover rounded"
+              />
+            )}
+            <div className="absolute inset-0 bg-gray bg-opacity-40 hidden group-hover:flex items-center justify-center rounded">
+              <Button
+                variant="secondary"
+                className="bg-white text-black hover:bg-gray-200"
+                onClick={() => onAdd(product)}
+              >
+                Quick Add
+              </Button>
+            </div>
+          </div>
+
+          <div className="mt-3">
+            <h2 className="text-lg font-semibold">{product.name}</h2>
+            <p className="text-sm text-muted-foreground">{product.description}</p>
+            <p className="text-lg font-bold text-blue-600 mt-2">
+              R$ {product.price.toFixed(2)}
+            </p>
+
+            <Link href={`/produto/${product.id}`}>
+              <Button className="mt-2 bg-blue-600 text-white hover:bg-blue-700">
+                Ver Detalhes
+              </Button>
+            </Link>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
   const { addToCart } = useCart();
@@ -32,53 +98,13 @@ export default function HomePage() {
     <div className="bg-gray-100 min-h-screen"> {/* fundo cinza claro */}
       <Hero /> 
 
-      {/* Espaçamento entre Hero e título */}
+      {/* Vitrine de cima: espaçamento entre Hero e título */}
       <div className="p-6 mt-12" id="produtos">
-        <h1 className="text-2xl font-bold mb-6">
-          Loja de Roupas, Tênis e Cadarços
-        </h1>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="border rounded-lg p-4 shadow-sm hover:shadow-md transition flex flex-col bg-white"
-            >
-              <div className="relative group">
-                {product.imageUrl && (
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className="w-full h-48 object-cover rounded"
-                  />
-                )}
-                <div className="absolute inset-0 bg-gray bg-opacity-40 hidden group-hover:flex items-center justify-center rounded">
-                  <Button
-                    variant="secondary"
-                    className="bg-white text-black hover:bg-gray-200"
-                    onClick={() => addToCart(product)}
-                  >
-                    Quick Add
-                  </Button>
-                </div>
-              </div>
-
-              <div className="mt-3">
-                <h2 className="text-lg font-semibold">{product.name}</h2>
-                <p className="text-sm text-muted-foreground">{product.description}</p>
-                <p className="text-lg font-bold text-blue-600 mt-2">
-                  R$ {product.price.toFixed(2)}
-                </p>
-
-                <Link href={`/produto/${product.id}`}>
-                  <Button className="mt-2 bg-blue-600 text-white hover:bg-blue-700">
-                    Ver Detalhes
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
+        <h1 className="text-2xl font-bold mb-6">{HOME_SECTIONS.top.title}</h1>
+        <ProductGrid
+          products={products.filter((p) => sameCategory(p.category, HOME_SECTIONS.top.category))}
+          onAdd={addToCart}
+        />
       </div>
 
       {/* Seção de informações institucionais */}
@@ -104,12 +130,21 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* Vitrine de baixo */}
+      <div className="p-6 mt-12">
+        <h2 className="text-2xl font-bold mb-6">{HOME_SECTIONS.bottom.title}</h2>
+        <ProductGrid
+          products={products.filter((p) => sameCategory(p.category, HOME_SECTIONS.bottom.category))}
+          onAdd={addToCart}
+        />
+      </div>
+
       {/* Footer */}
       <footer className="bg-gray-200 text-center py-4 mt-12">
         <p className="text-sm text-gray-700">
           © {new Date().getFullYear()} Conci - Todos os direitos reservados
         </p>
-        <p className="text-sm text-gray-600">Contato: gui.conci@hotmail.com</p>
+        <p className="text-sm text-gray-600">Contato: conciluzcwb@gmail.com</p>
       </footer>
     </div>
   );

@@ -12,7 +12,7 @@ const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
 function NavBar() {
   const { data: session } = useSession()
-  const { cart } = useCart()
+  const { count } = useCart()
 
   return (
     <nav className="border-b p-4 flex gap-4 items-center">
@@ -34,7 +34,7 @@ function NavBar() {
       <Link href="/carrinho" className="ml-auto relative">
         <ShoppingCartIcon className="h-6 w-6 text-gray-700 hover:text-black" />
         <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
-          {cart.length}
+          {count}
         </span>
       </Link>
 

@@ -14,8 +14,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { registerUser } from "@/lib/auth"; // 👈 agora usamos o service
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { EmailCodeStep } from "@/components/EmailCodeStep";
+import { getCallbackUrl, withCallbackUrl } from "@/lib/callbackUrl";
 
 export default function RegisterPage() {
   const form = useForm<RegisterData>({
@@ -31,6 +33,10 @@ export default function RegisterPage() {
 
   // Depois do cadastro, guardamos os dados e mostramos a etapa do código
   const [pending, setPending] = useState<{ data: RegisterData; message: string } | null>(null);
+
+  // Link "Entrar" levando junto o callbackUrl (montado no navegador)
+  const [loginHref, setLoginHref] = useState("/login");
+  useEffect(() => setLoginHref(withCallbackUrl("/login")), []);
 
   async function onSubmit(data: RegisterData) {
     try {
@@ -54,7 +60,7 @@ export default function RegisterPage() {
             <EmailCodeStep
               email={pending.data.email}
               password={pending.data.password}
-              redirectTo="/"
+              redirectTo={getCallbackUrl("/")} // veio do carrinho? volta pro carrinho
               initialNotice={pending.message}
             />
           ) : (
@@ -106,6 +112,11 @@ export default function RegisterPage() {
               >
                 Cadastrar
               </Button>
+
+              <p className="text-center text-sm">
+                Já tem conta?{" "}
+                <Link href={loginHref} className="underline">Entrar</Link>
+              </p>
             </div>
           </Form>
           )}

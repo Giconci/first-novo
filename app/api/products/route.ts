@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { put } from "@vercel/blob";
+import { requireAdmin } from "@/lib/session";
 
 // GET /api/products → lista produtos
 // /api/products          → todos (usado no admin)
@@ -21,6 +22,9 @@ export async function GET(req: NextRequest) {
 
 // POST /api/products → cria novo produto
 export async function POST(req: NextRequest) {
+  const admin = await requireAdmin(); // 🔒 só admin cria
+  if (admin instanceof NextResponse) return admin;
+
   try {
     const formData = await req.formData();
 
