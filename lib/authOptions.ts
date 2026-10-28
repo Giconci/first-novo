@@ -42,11 +42,16 @@ export const authOptions: NextAuthOptions = {
           });
         }
 
-        // 🔒 Só é admin quem é admin no banco E tem o email do ADMIN_EMAIL do .env.
-        // Qualquer outro "admin" entra como cliente comum.
+        // 🔒 Admin é quem tem o email do ADMIN_EMAIL (.env / Vercel).
+        // Chegando aqui, a pessoa já acertou senha E código enviado para esse
+        // email, ou seja, provou que é dona dele. Qualquer outro entra como cliente.
         const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
-        const isAdmin =
-          user.role === "admin" && !!adminEmail && user.email.toLowerCase() === adminEmail;
+        const isAdmin = !!adminEmail && user.email.toLowerCase() === adminEmail;
+
+        // Deixa o banco igual (aparece "admin" no Prisma Studio / Neon)
+        if (isAdmin && user.role !== "admin") {
+          await prisma.user.update({ where: { id: user.id }, data: { role: "admin" } });
+        }
 
         // ✅ Retorna objeto compatível com User
         return {
