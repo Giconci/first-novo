@@ -1,45 +1,91 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Loja — e-commerce com Next.js e Mercado Pago
 
-## Getting Started
+Loja virtual de roupas (bonés e camisetas) com carrinho, login com código por email, pagamento pelo Mercado Pago e painel de administração.
 
-First, run the development server:
+🔗 **Demo:** https://first-novo.vercel.app
+> O pagamento está em **modo de teste**: nenhuma cobrança é real.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Funcionalidades
+
+**Cliente**
+- Catálogo por categoria, busca e página de produto
+- Carrinho com quantidade, salvo no navegador (`localStorage`)
+- Cadastro e login com **código de 6 dígitos enviado por email**
+- Endereço de entrega com **preenchimento automático pelo CEP** (ViaCEP)
+- Pagamento pelo **Mercado Pago Checkout Pro** (Pix, cartão, boleto)
+- Página "Meus pedidos" com o status de cada compra
+- Layout responsivo com menu hambúrguer no celular
+
+**Administrador**
+- Cadastro, edição e exclusão de produtos com upload de foto (Vercel Blob)
+- Lista de pedidos com filtros (a enviar, enviados, aguardando pagamento) e botão "Marcar como enviado"
+
+## Tecnologias
+
+| Área | Ferramenta |
+|---|---|
+| Framework | Next.js (App Router) + React + TypeScript |
+| Estilo | Tailwind CSS + shadcn/ui |
+| Banco de dados | PostgreSQL (Neon em produção) + Prisma ORM |
+| Autenticação | NextAuth (credenciais + código por email) + bcrypt |
+| Validação | Zod + React Hook Form (mesmo schema no cliente e no servidor) |
+| Pagamento | Mercado Pago (Checkout Pro + webhook) |
+| Email | Nodemailer (Gmail) |
+| Imagens | Vercel Blob |
+| Deploy | Vercel |
+
+## Como o pagamento funciona
+
+```
+Carrinho ──► POST /api/checkout ──► cria o pedido (pending) e a preferência no Mercado Pago
+                                          │
+                                          ▼
+                              cliente paga no Mercado Pago
+                                          │
+               ┌──────────────────────────┴──────────────────────────┐
+               ▼                                                     ▼
+  volta para /pedido/sucesso                     Mercado Pago chama /api/webhooks/mercadopago
+               │                                                     │
+               └───────────► syncPayment() consulta o pagamento ◄────┘
+                             e atualiza o status do pedido
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- O **preço e o total são calculados no servidor**, a partir do banco. O valor enviado pelo navegador nunca é usado.
+- O status só muda depois de **consultar o pagamento direto no Mercado Pago**. Assim, uma chamada falsa ao webhook não marca um pedido como pago.
+- O preço de cada item fica salvo no pedido (`unitPrice`). Se o produto mudar de preço depois, o histórico continua correto.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Rodando localmente
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Pré-requisitos: Node.js 20+ e PostgreSQL.
 
-## Learn More
+```bash
+git clone https://github.com/Giconci/first-novo.git
+cd first-novo
+npm install
 
-To learn more about Next.js, take a look at the following resources:
+cp .env.example .env      # preencha os valores
+npx prisma migrate dev    # cria as tabelas
+npx prisma db seed        # cria o usuário admin local
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+npm run dev               # http://localhost:3000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Sem o Gmail configurado, o código de login aparece no terminal do `npm run dev`.
 
-## Deploy on Vercel
+## Estrutura
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+app/            páginas e rotas de API (App Router)
+  api/          checkout, webhook, pedidos, produtos, cadastro, login
+  admin/        painel do administrador
+components/     componentes de interface (NavBar, Hero, OrderList, AddressForm...)
+lib/            regras do servidor (sessão, Mercado Pago, pagamento, email)
+schemas/        validações Zod compartilhadas entre cliente e servidor
+prisma/         schema do banco, migrations e seed
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
-# Loja
-Loja de roupas e calçados feita em Next.js
->>>>>>> e3740454c9dd548f5d9e2bbade2b12dc230ee94d
-=======
-# first
->>>>>>> 68d953147407a5fa4d5d1301cbe5bb8e3b0d03e8
+## Próximos passos
+
+- [ ] Testes automatizados do checkout e do webhook
+- [ ] Baixar o estoque quando o pedido for pago
+- [ ] Chave de produção do Mercado Pago
