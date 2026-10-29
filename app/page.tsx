@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Hero from "@/components/Hero"; 
 import { useCart } from "@/components/ui/context/CartContext"; 
-import Link from "next/link"; 
+import Link from "next/link";
+import { CATEGORIES } from "@/lib/categories";
+import { TruckIcon, QrCodeIcon, ArrowPathIcon, ShieldCheckIcon } from "@heroicons/react/24/outline";
 
 type Product = {
   id: number;
@@ -24,6 +26,30 @@ const HOME_SECTIONS = {
 
 const sameCategory = (a: string | null | undefined, b: string) =>
   (a ?? "").toLowerCase() === b.toLowerCase();
+
+// ✏️ Faixa de vantagens abaixo do banner (textos de exemplo)
+const VANTAGENS = [
+  { icon: TruckIcon, titulo: "Entrega no Brasil todo", texto: "Envio em até 2 dias úteis" },
+  { icon: QrCodeIcon, titulo: "Pix ou cartão", texto: "Em até 12x no cartão" },
+  { icon: ArrowPathIcon, titulo: "Troca grátis", texto: "Primeira troca em 30 dias" },
+  { icon: ShieldCheckIcon, titulo: "Compra segura", texto: "Pagamento pelo Mercado Pago" },
+];
+
+// Título da vitrine + "Ver todos" levando para a categoria em /produtos
+function SectionTitle({ title, category }: { title: string; category: string }) {
+  const slug = CATEGORIES.find((c) => sameCategory(c.label, category))?.slug;
+  return (
+    <div className="flex items-baseline justify-between mb-6">
+      <h2 className="text-2xl font-bold">{title}</h2>
+      <Link
+        href={slug ? `/produtos?categoria=${slug}` : "/produtos"}
+        className="text-sm text-petroleo hover:underline"
+      >
+        Ver todos →
+      </Link>
+    </div>
+  );
+}
 
 function ProductGrid({
   products,
@@ -99,57 +125,57 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="bg-gray-100 min-h-screen"> {/* fundo cinza claro */}
-      <Hero /> 
+    <div className="bg-gray-100 min-h-screen -m-6"> {/* fundo cinza claro; -m-6 encosta nas bordas */}
+      <Hero />
 
-      {/* Vitrine de cima: espaçamento entre Hero e título */}
+      {/* Vantagens logo abaixo do banner */}
+      <div className="bg-white border-y">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-6 py-5 text-sm">
+          {VANTAGENS.map((v) => (
+            <div key={v.titulo} className="flex items-center gap-3">
+              <v.icon className="h-7 w-7 shrink-0 text-petroleo-claro" />
+              <div>
+                <p className="font-semibold text-petroleo">{v.titulo}</p>
+                <p className="text-gray-500">{v.texto}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Vitrine de cima */}
       <div className="p-6 mt-12" id="produtos">
-        <h1 className="text-2xl font-bold mb-6">{HOME_SECTIONS.top.title}</h1>
+        <SectionTitle title={HOME_SECTIONS.top.title} category={HOME_SECTIONS.top.category} />
         <ProductGrid
           products={products.filter((p) => sameCategory(p.category, HOME_SECTIONS.top.category))}
           onAdd={addToCart}
         />
       </div>
 
-      {/* Seção de informações institucionais */}
-      <div className="p-6 mt-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Card 1 */}
-          <div className="border border-gray-300 rounded-lg p-6 bg-white shadow-sm">
-            <h2 className="text-xl font-bold mb-2">Nossa História</h2>
-            <p className="text-gray-700">
-              Fundada em Curitiba, nossa empresa tem anos de experiência no setor de moda e calçados.
-              Trabalhamos sempre com dedicação para oferecer produtos de qualidade e estilo para nossos clientes.
-            </p>
-          </div>
-
-          {/* Card 2 */}
-          <div className="border border-gray-300 rounded-lg p-6 bg-white shadow-sm">
-            <h2 className="text-xl font-bold mb-2">Compromisso com Você</h2>
-            <p className="text-gray-700">
-              Prezamos pela confiança e satisfação de quem compra conosco. 
-              Nossa equipe está sempre pronta para atender e garantir que sua experiência seja a melhor possível.
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* Faixa da história: chama para a página /sobre */}
+      <section className="mt-12 bg-petroleo text-white rounded-lg mx-6 px-6 py-12 text-center">
+        <p className="text-sm uppercase tracking-widest text-white/60">Desde 2019</p>
+        <h2 className="text-2xl md:text-3xl font-bold mt-2">Feito em Curitiba, pensado pra durar</h2>
+        <p className="mt-3 text-white/80 max-w-xl mx-auto">
+          Começamos com 50 bonés bordados numa garagem. Hoje enviamos para todo o Brasil,
+          com o mesmo cuidado em cada peça.
+        </p>
+        <Link
+          href="/sobre"
+          className="inline-block mt-6 rounded-md bg-white px-6 py-3 text-petroleo font-medium hover:bg-gray-100"
+        >
+          Conheça nossa história
+        </Link>
+      </section>
 
       {/* Vitrine de baixo */}
-      <div className="p-6 mt-12">
-        <h2 className="text-2xl font-bold mb-6">{HOME_SECTIONS.bottom.title}</h2>
+      <div className="p-6 mt-12 pb-16">
+        <SectionTitle title={HOME_SECTIONS.bottom.title} category={HOME_SECTIONS.bottom.category} />
         <ProductGrid
           products={products.filter((p) => sameCategory(p.category, HOME_SECTIONS.bottom.category))}
           onAdd={addToCart}
         />
       </div>
-
-      {/* Footer */}
-      <footer className="bg-gray-200 text-center py-4 mt-12">
-        <p className="text-sm text-gray-700">
-          © {new Date().getFullYear()} Conci - Todos os direitos reservados
-        </p>
-        <p className="text-sm text-gray-600">Contato: conciluzcwb@gmail.com</p>
-      </footer>
     </div>
   );
 }

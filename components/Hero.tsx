@@ -46,7 +46,7 @@ export default function Hero() {
   };
 
   return (
-    <div className="relative w-full mb-18 h-64 md:h-96 overflow-hidden">
+    <div className="relative w-full h-64 md:h-96 overflow-hidden">
       <picture>
         <source media="(max-width: 768px)" srcSet={banners[current].mobile} />
         <img
