@@ -42,7 +42,8 @@ model Product {
   updatedAt   DateTime    @updatedAt
   orderItems  OrderItem[]
   showOnHome     Boolean  @default(false)
-showOnProducts Boolean  @default(true)
+  showOnProducts Boolean  @default(true)
+  archived       Boolean  @default(false) // "excluído" mas com pedidos: some do site, fica no histórico
 }
 
 model Order {

@@ -31,15 +31,51 @@ export default function AdminPage() {
   const [novoHome, setNovoHome] = useState(false);           // 🔹 NOVO
   const [novoProdutos, setNovoProdutos] = useState(false);    // 🔹 NOVO
 
-  useEffect(() => {
+  // 🔹 Exclusões ficam pendentes até clicar em "Salvar alterações"
+  const [paraExcluir, setParaExcluir] = useState<number[]>([]);
+  const [salvando, setSalvando] = useState(false);
+  const [aviso, setAviso] = useState<{ tipo: "ok" | "erro"; texto: string } | null>(null);
+
+  // Sempre recarrega do banco: a tabela mostra o que está salvo de verdade
+  const carregarProdutos = () =>
     fetch("/api/products")
       .then((res) => res.json())
       .then((data) => setProdutos(data));
+
+  useEffect(() => {
+    carregarProdutos();
   }, []);
 
-  const excluirProduto = async (id: number) => {
-    await fetch(`/api/products/${id}`, { method: "DELETE" });
-    setProdutos(produtos.filter((p) => p.id !== id));
+  const alternarExclusao = (id: number) => {
+    setAviso(null);
+    setParaExcluir((ids) => (ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]));
+  };
+
+  const salvarAlteracoes = async () => {
+    setSalvando(true);
+    const resultados = await Promise.all(
+      paraExcluir.map(async (id) => {
+        const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+        return { id, ok: res.ok, ...(await res.json().catch(() => ({}))) };
+      })
+    );
+    await carregarProdutos();
+    setSalvando(false);
+
+    const falhas = resultados.filter((r) => !r.ok);
+    const arquivados = resultados.filter((r) => r.ok && r.archived).length;
+    setParaExcluir(falhas.map((r) => r.id)); // o que falhou continua pendente
+
+    if (falhas.length) {
+      setAviso({ tipo: "erro", texto: `Não foi possível excluir ${falhas.length} produto(s). Tente de novo.` });
+    } else {
+      setAviso({
+        tipo: "ok",
+        texto:
+          `Alterações salvas: ${resultados.length} produto(s) excluído(s).` +
+          (arquivados ? ` ${arquivados} já tinha(m) pedidos e foi(ram) arquivado(s): some(m) do site, mas continua(m) no histórico de pedidos.` : ""),
+      });
+    }
   };
 
   const iniciarEdicao = (produto: any) => {
@@ -67,9 +103,15 @@ export default function AdminPage() {
       method: "PUT",
       body: formData,
     });
+    if (!res.ok) {
+      setAviso({ tipo: "erro", texto: "Não foi possível salvar a edição. Nada foi alterado." });
+      setEditando(null);
+      return;
+    }
     const produtoAtualizado = await res.json();
 
     setProdutos(produtos.map((p) => (p.id === editando.id ? produtoAtualizado : p)));
+    setAviso({ tipo: "ok", texto: `"${produtoAtualizado.name}" salvo.` });
     setEditando(null);
   };
 
@@ -87,8 +129,13 @@ export default function AdminPage() {
       method: "POST",
       body: formData,
     });
+    if (!res.ok) {
+      setAviso({ tipo: "erro", texto: "Não foi possível criar o produto. Confira os campos." });
+      return; // mantém o formulário aberto e preenchido
+    }
     const produtoCriado = await res.json();
     setProdutos([...produtos, produtoCriado]);
+    setAviso({ tipo: "ok", texto: `"${produtoCriado.name}" criado.` });
     setCriando(false);
     setNovoNome("");
     setNovoPreco("");
@@ -144,6 +191,40 @@ export default function AdminPage() {
         Métricas
       </Link>
 
+      {aviso && (
+        <p
+          className={`mt-4 p-3 rounded border text-sm ${
+            aviso.tipo === "ok" ? "bg-green-50 border-green-300 text-green-800" : "bg-red-50 border-red-300 text-red-800"
+          }`}
+        >
+          {aviso.tipo === "ok" ? "✅ " : "⚠️ "}
+          {aviso.texto}
+        </p>
+      )}
+
+      {/* 🔹 Barra de alterações pendentes */}
+      {paraExcluir.length > 0 && (
+        <div className="sticky top-0 z-10 mt-4 p-3 rounded border border-amber-300 bg-amber-50 flex flex-wrap items-center gap-3">
+          <p className="text-sm text-amber-900 flex-1">
+            {paraExcluir.length} produto(s) marcado(s) para excluir. Nada foi apagado ainda.
+          </p>
+          <button
+            onClick={() => setParaExcluir([])}
+            disabled={salvando}
+            className="border border-gray-400 px-4 py-2 text-sm"
+          >
+            Descartar
+          </button>
+          <button
+            onClick={salvarAlteracoes}
+            disabled={salvando}
+            className="bg-petroleo text-white hover:bg-petroleo-escuro px-4 py-2 text-sm disabled:opacity-60"
+          >
+            {salvando ? "Salvando..." : "Salvar alterações"}
+          </button>
+        </div>
+      )}
+
       <table className="w-full border mt-6">
         <thead>
           <tr>
@@ -159,7 +240,10 @@ export default function AdminPage() {
         </thead>
         <tbody>
           {produtos.map((p) => (
-            <tr key={p.id}>
+            <tr
+              key={p.id}
+              className={paraExcluir.includes(p.id) ? "bg-red-50 line-through text-gray-400" : ""}
+            >
               <td className="border p-2">{p.id}</td>
               <td className="border p-2">{p.name}</td>
               <td className="border p-2">R$ {p.price}</td>
@@ -178,12 +262,21 @@ export default function AdminPage() {
                 >
                   Editar
                 </button>
-                <button
-                  onClick={() => excluirProduto(p.id)}
-                  className="bg-red-500 text-white px-2 py-1"
-                >
-                  Excluir
-                </button>
+                {paraExcluir.includes(p.id) ? (
+                  <button
+                    onClick={() => alternarExclusao(p.id)}
+                    className="border border-gray-400 text-gray-700 px-2 py-1 no-underline"
+                  >
+                    Desfazer
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => alternarExclusao(p.id)}
+                    className="bg-red-500 text-white px-2 py-1"
+                  >
+                    Excluir
+                  </button>
+                )}
               </td>
             </tr>
           ))}

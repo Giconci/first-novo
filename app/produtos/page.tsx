@@ -18,6 +18,7 @@ export default async function ProdutosPage({
 
   const where = {
     showOnProducts: true,
+    archived: false,
     ...(current
       ? { category: { equals: current.label, mode: "insensitive" as const } }
       : {}),

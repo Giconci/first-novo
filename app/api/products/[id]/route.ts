@@ -17,7 +17,7 @@ export async function GET(req: NextRequest, context: any) {
       where: { id: productId },
     });
 
-    if (!product) {
+    if (!product || product.archived) {
       return NextResponse.json({ error: "Produto não encontrado" }, { status: 404 });
     }
 
@@ -75,6 +75,9 @@ export async function PUT(req: NextRequest, context: any) {
 }
 
 // DELETE /api/products/:id → exclui produto
+// Produto que já aparece em algum pedido não pode sumir do banco (o pedido
+// aponta para ele). Nesse caso ele é ARQUIVADO: some do site e do admin,
+// mas continua no histórico de pedidos e nas métricas.
 export async function DELETE(req: NextRequest, context: any) {
   const admin = await requireAdmin(); // 🔒 só admin exclui
   if (admin instanceof NextResponse) return admin;
@@ -83,9 +86,19 @@ export async function DELETE(req: NextRequest, context: any) {
   const productId = Number(id);
 
   try {
+    const pedidos = await prisma.orderItem.count({ where: { productId } });
+    if (pedidos > 0) {
+      await prisma.product.update({
+        where: { id: productId },
+        data: { archived: true, showOnHome: false, showOnProducts: false },
+      });
+      return NextResponse.json({ message: "Produto arquivado", archived: true });
+    }
+
     await prisma.product.delete({ where: { id: productId } });
-    return NextResponse.json({ message: "Produto excluído" });
-  } catch {
+    return NextResponse.json({ message: "Produto excluído", archived: false });
+  } catch (error) {
+    console.error("Erro ao excluir produto:", error);
     return NextResponse.json({ error: "Erro ao excluir produto" }, { status: 500 });
   }
 }

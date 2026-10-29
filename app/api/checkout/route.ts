@@ -44,7 +44,7 @@ export async function POST(req: Request) {
 
   // Busca os produtos de verdade no banco
   const products = await prisma.product.findMany({
-    where: { id: { in: [...quantities.keys()] } },
+    where: { id: { in: [...quantities.keys()] }, archived: false },
   });
   if (products.length !== quantities.size) {
     return NextResponse.json(

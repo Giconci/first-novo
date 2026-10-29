@@ -11,7 +11,8 @@ export async function GET(req: NextRequest) {
     const home = req.nextUrl.searchParams.get("home") === "true"; // 🔹 NOVO
 
     const products = await prisma.product.findMany({
-      where: home ? { showOnHome: true } : {},                     // 🔹 NOVO
+      // arquivados (excluídos que têm pedidos) nunca aparecem
+      where: home ? { showOnHome: true, archived: false } : { archived: false },
       orderBy: { createdAt: "desc" },
     });
     return NextResponse.json(products);
