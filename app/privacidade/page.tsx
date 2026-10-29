@@ -25,6 +25,7 @@ const PARCEIROS = [
   { nome: "Google (Gmail)", para: "enviar o código de acesso para o seu email." },
   { nome: "Vercel e Neon", para: "hospedar o site e guardar o banco de dados." },
   { nome: "ViaCEP", para: "preencher o endereço a partir do CEP (só o CEP é enviado)." },
+  { nome: "Sentry", para: "avisar a Conci quando algo dá erro no site (página, navegador e horário do erro). Não usa cookies." },
 ]
 
 export default function PrivacidadePage() {
