@@ -3,8 +3,9 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useSession, signOut } from "next-auth/react"
-import { ShoppingCartIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 import { useCart } from "@/components/ui/context/CartContext"
+import { SkateIcon } from "@/components/SkateIcon"
 
 const linkClass = "px-2 py-1 rounded hover:bg-gray-100"
 
@@ -76,9 +77,14 @@ export function NavBar() {
           </span>
         )}
 
-        {/* Carrinho sempre visível */}
-        <Link href="/carrinho" className={`${session ? "" : "ml-auto"} relative`} onClick={close}>
-          <ShoppingCartIcon className="h-6 w-6 text-gray-700 hover:text-black" />
+        {/* Carrinho sempre visível (ícone de skate: 28px no celular, 32px no computador) */}
+        <Link
+          href="/carrinho"
+          className={`${session ? "" : "ml-auto"} relative`}
+          onClick={close}
+          aria-label="Carrinho"
+        >
+          <SkateIcon className="h-7 w-7 md:h-8 md:w-8 text-gray-700 hover:text-black" />
           <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
             {count}
           </span>
