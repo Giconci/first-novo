@@ -23,6 +23,8 @@ export function NavBar() {
     <>
       <Link href="/" className={linkClass} onClick={close}>Home</Link>
       <Link href="/produtos" className={linkClass} onClick={close}>Produtos</Link>
+      <Link href="/sobre" className={linkClass} onClick={close}>Sobre</Link>
+      <Link href="/contato" className={linkClass} onClick={close}>Contato</Link>
 
       {session ? (
         <>
@@ -59,6 +61,11 @@ export function NavBar() {
         >
           {open ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
         </button>
+
+        {/* Marca da loja: leva para a home */}
+        <Link href="/" className="text-xl font-bold tracking-widest text-petroleo" onClick={close}>
+          CONCI
+        </Link>
 
         {/* Links em linha só no computador */}
         <div className="hidden md:flex gap-4 items-center">{links}</div>
