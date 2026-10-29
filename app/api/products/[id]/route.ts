@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { put } from "@vercel/blob";
 import { requireAdmin } from "@/lib/session";
+import { parseStock } from "@/lib/stock";
 
 // GET /api/products/:id → busca produto específico
 export async function GET(req: NextRequest, context: any) {
@@ -45,6 +46,7 @@ export async function PUT(req: NextRequest, context: any) {
     const data: any = {
       name: String(formData.get("name") ?? ""),
       price: parseFloat(String(formData.get("price") ?? "0")),
+      stock: parseStock(formData.get("stock")),
       category: String(formData.get("category") ?? ""),
       description: String(formData.get("description") ?? ""),
       showOnHome: formData.get("showOnHome") === "true",

@@ -12,6 +12,7 @@ type Product = {
   price: number
   imageUrl?: string
   category: string
+  stock: number | null
 }
 
 export default function ProdutoPage() {
@@ -53,12 +54,19 @@ export default function ProdutoPage() {
       <p className="text-lg font-bold text-petroleo-claro mb-4">
         R$ {product.price ? product.price.toFixed(2) : "0.00"}
       </p>
-      <Button
-        className="bg-petroleo text-white hover:bg-petroleo-escuro"
-        onClick={() => addToCart(product)}
-      >
-        Adicionar ao Carrinho
-      </Button>
+      {/* stock 0 = esgotado (vazio = sem controle de estoque) */}
+      {product.stock === 0 ? (
+        <Button disabled className="bg-gray-300 text-gray-600">
+          Esgotado
+        </Button>
+      ) : (
+        <Button
+          className="bg-petroleo text-white hover:bg-petroleo-escuro"
+          onClick={() => addToCart(product)}
+        >
+          Adicionar ao Carrinho
+        </Button>
+      )}
     </div>
   )
 }

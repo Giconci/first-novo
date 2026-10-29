@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { put } from "@vercel/blob";
 import { requireAdmin } from "@/lib/session";
+import { disponivel, parseStock } from "@/lib/stock";
 
 // GET /api/products → lista produtos
 // /api/products          → todos (usado no admin)
@@ -12,7 +13,8 @@ export async function GET(req: NextRequest) {
 
     const products = await prisma.product.findMany({
       // arquivados (excluídos que têm pedidos) nunca aparecem
-      where: home ? { showOnHome: true, archived: false } : { archived: false },
+      // home mostra só o que dá para comprar; o admin (sem ?home) vê os esgotados também
+      where: home ? { showOnHome: true, archived: false, ...disponivel } : { archived: false },
       orderBy: { createdAt: "desc" },
     });
     return NextResponse.json(products);
@@ -54,6 +56,7 @@ export async function POST(req: NextRequest) {
       data: {
         name,
         price,
+        stock: parseStock(formData.get("stock")),
         category,
         description,
         imageUrl,

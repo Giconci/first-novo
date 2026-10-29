@@ -15,6 +15,7 @@ export default function AdminPage() {
   const [editando, setEditando] = useState<any>(null);
   const [nomeEdit, setNomeEdit] = useState("");
   const [precoEdit, setPrecoEdit] = useState("");
+  const [estoqueEdit, setEstoqueEdit] = useState(""); // vazio = sem controle
   const [categoriaEdit, setCategoriaEdit] = useState("");
   const [imagemEdit, setImagemEdit] = useState<File | null>(null);
   const [descricaoEdit, setDescricaoEdit] = useState("");
@@ -25,6 +26,7 @@ export default function AdminPage() {
   const [criando, setCriando] = useState(false);
   const [novoNome, setNovoNome] = useState("");
   const [novoPreco, setNovoPreco] = useState("");
+  const [novoEstoque, setNovoEstoque] = useState("");
   const [novaCategoria, setNovaCategoria] = useState("");
   const [novaImagem, setNovaImagem] = useState<File | null>(null);
   const [novaDescricao, setNovaDescricao] = useState("");
@@ -82,6 +84,7 @@ export default function AdminPage() {
     setEditando(produto);
     setNomeEdit(produto.name);
     setPrecoEdit(String(produto.price));
+    setEstoqueEdit(produto.stock == null ? "" : String(produto.stock));
     setCategoriaEdit(produto.category || "");
     setDescricaoEdit(produto.description || "");            // 🔹 CORRIGIDO
     setHomeEdit(Boolean(produto.showOnHome));               // 🔹 NOVO
@@ -93,6 +96,7 @@ export default function AdminPage() {
     const formData = new FormData();
     formData.append("name", nomeEdit);
     formData.append("price", precoEdit);
+    formData.append("stock", estoqueEdit);
     formData.append("category", categoriaEdit);
     formData.append("description", descricaoEdit);
     formData.append("showOnHome", String(homeEdit));            // 🔹 NOVO
@@ -119,6 +123,7 @@ export default function AdminPage() {
     const formData = new FormData();
     formData.append("name", novoNome);
     formData.append("price", novoPreco);
+    formData.append("stock", novoEstoque);
     formData.append("category", novaCategoria);
     formData.append("description", novaDescricao);
     formData.append("showOnHome", String(novoHome));            // 🔹 NOVO
@@ -139,6 +144,7 @@ export default function AdminPage() {
     setCriando(false);
     setNovoNome("");
     setNovoPreco("");
+    setNovoEstoque("");
     setNovaCategoria("");
     setNovaImagem(null);
     setNovaDescricao("");
@@ -231,6 +237,7 @@ export default function AdminPage() {
             <th className="border p-2">ID</th>
             <th className="border p-2">Nome</th>
             <th className="border p-2">Preço</th>
+            <th className="border p-2">Estoque</th>
             <th className="border p-2">Categoria</th>
             <th className="border p-2">Imagem</th>
             <th className="border p-2">Home</th>       {/* 🔹 NOVO */}
@@ -247,6 +254,15 @@ export default function AdminPage() {
               <td className="border p-2">{p.id}</td>
               <td className="border p-2">{p.name}</td>
               <td className="border p-2">R$ {p.price}</td>
+              <td className="border p-2 text-center">
+                {p.stock == null ? (
+                  <span className="text-gray-400">sem controle</span>
+                ) : p.stock === 0 ? (
+                  <span className="text-red-600 font-semibold">Esgotado</span>
+                ) : (
+                  p.stock
+                )}
+              </td>
               <td className="border p-2">{p.category}</td>
               <td className="border p-2">
                 {p.imageUrl && (
@@ -300,6 +316,14 @@ export default function AdminPage() {
               placeholder="Preço"
               value={precoEdit}
               onChange={(e) => setPrecoEdit(e.target.value)}
+              className="border p-2"
+            />
+            <input
+              type="number"
+              min={0}
+              placeholder="Estoque (vazio = sem controle)"
+              value={estoqueEdit}
+              onChange={(e) => setEstoqueEdit(e.target.value)}
               className="border p-2"
             />
             <select
@@ -380,6 +404,14 @@ export default function AdminPage() {
               placeholder="Preço"
               value={novoPreco}
               onChange={(e) => setNovoPreco(e.target.value)}
+              className="border p-2"
+            />
+            <input
+              type="number"
+              min={0}
+              placeholder="Estoque (vazio = sem controle)"
+              value={novoEstoque}
+              onChange={(e) => setNovoEstoque(e.target.value)}
               className="border p-2"
             />
             <select

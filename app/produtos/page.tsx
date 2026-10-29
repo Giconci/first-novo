@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { CATEGORIES } from "@/lib/categories";
+import { disponivel } from "@/lib/stock";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +20,7 @@ export default async function ProdutosPage({
   const where = {
     showOnProducts: true,
     archived: false,
+    ...disponivel, // esgotado some da lista
     ...(current
       ? { category: { equals: current.label, mode: "insensitive" as const } }
       : {}),

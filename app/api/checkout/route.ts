@@ -54,6 +54,16 @@ export async function POST(req: Request) {
   }
 
   const lines = products.map((p) => ({ product: p, quantity: quantities.get(p.id)! }));
+
+  // Não deixa comprar mais do que tem em estoque (stock vazio = sem controle)
+  const semEstoque = lines.find((l) => l.product.stock !== null && l.quantity > l.product.stock);
+  if (semEstoque) {
+    const { name, stock } = semEstoque.product;
+    return NextResponse.json(
+      { error: stock === 0 ? `${name} esgotou` : `Só temos ${stock} unidade(s) de ${name}` },
+      { status: 400 }
+    );
+  }
   const total = lines.reduce((acc, l) => acc + l.product.price * l.quantity, 0);
 
   // 1) Cria o pedido no banco como "pending" (aguardando pagamento)
