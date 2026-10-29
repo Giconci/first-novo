@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -100,13 +100,28 @@ export default function AdminPage() {
   };
 
   if (status === "loading") return <p>Carregando...</p>;
-  if (!session) {
-    router.push("/login");
-    return null;
-  }
-  if (session.user.role !== "admin") {
-    router.push("/");
-    return null;
+
+  // Em vez de redirecionar sem explicar, mostra o motivo na tela
+  if (!session || session.user.role !== "admin") {
+    return (
+      <div className="max-w-md mx-auto mt-16 text-center space-y-4">
+        <h1 className="text-2xl font-bold">Área do administrador</h1>
+        {session ? (
+          <p>
+            Você está logado como <strong>{session.user.email}</strong>, que é uma conta de
+            cliente. Saia e entre com o email de administrador.
+          </p>
+        ) : (
+          <p>Você precisa entrar com a conta de administrador.</p>
+        )}
+        <button
+          onClick={() => (session ? signOut({ callbackUrl: "/login?callbackUrl=/admin" }) : router.push("/login?callbackUrl=/admin"))}
+          className="bg-petroleo text-white hover:bg-petroleo-escuro px-4 py-2 rounded"
+        >
+          {session ? "Sair e entrar como admin" : "Entrar"}
+        </button>
+      </div>
+    );
   }
 
   return (
