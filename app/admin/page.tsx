@@ -140,6 +140,10 @@ export default function AdminPage() {
         Ver pedidos
       </Link>
 
+      <Link href="/admin/metricas" className="ml-2 border px-4 py-2 mt-4 inline-block">
+        Métricas
+      </Link>
+
       <table className="w-full border mt-6">
         <thead>
           <tr>
