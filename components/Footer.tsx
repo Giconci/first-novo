@@ -23,6 +23,7 @@ const COLUNAS = [
       { href: "/duvidas", texto: "Dúvidas frequentes" },
       { href: "/trocas", texto: "Trocas e devoluções" },
       { href: "/meus-pedidos", texto: "Meus pedidos" },
+      { href: "/privacidade", texto: "Privacidade e cookies" },
     ],
   },
 ]

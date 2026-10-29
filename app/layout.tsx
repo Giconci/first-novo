@@ -7,6 +7,7 @@ import { SessionProvider } from "next-auth/react"
 import { CartProvider } from "@/components/ui/context/CartContext"
 import { NavBar } from "@/components/NavBar"
 import { Footer } from "@/components/Footer"
+import { CookieBanner } from "@/components/CookieBanner"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -20,6 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <NavBar />
             <main className="p-6 flex-1">{children}</main>
             <Footer />
+            <CookieBanner />
           </CartProvider>
         </SessionProvider>
       </body>
