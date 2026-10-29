@@ -3,9 +3,29 @@ import Link from "next/link"
 import { InfoPage, InfoSection } from "@/components/InfoPage"
 
 export const metadata: Metadata = {
-  title: "Nossa história | Conci",
-  description: "Como a Conci nasceu em Curitiba e o que acreditamos.",
+  title: "Sobre a Conci | A melhor do Sul do Brasil",
+  description: "Bonés e camisetas feitos em Curitiba: por que a Conci é a melhor loja do Sul do Brasil.",
 }
+
+// ✏️ Por que somos a melhor do Sul. Ajuste os textos se algum não for verdade.
+const DIFERENCIAIS = [
+  {
+    titulo: "Feito no Sul, de ponta a ponta",
+    texto: "Tecido, bordado e costura vêm de oficinas do Paraná e de Santa Catarina que conhecemos pelo nome.",
+  },
+  {
+    titulo: "Qualidade que dura",
+    texto: "Tecido grosso, costura reforçada e bordado firme. Peça boa é a que você usa por anos.",
+  },
+  {
+    titulo: "Perto de você",
+    texto: "Saímos de Curitiba, então o pedido chega rápido no Paraná, em Santa Catarina e no Rio Grande do Sul.",
+  },
+  {
+    titulo: "Preço justo",
+    texto: "Sem intermediários: da oficina direto para você, sem pagar a mais por marca de fora.",
+  },
+]
 
 // ✏️ Texto de exemplo (inventado). Troque pela história real da loja.
 const MARCOS = [
@@ -15,18 +35,23 @@ const MARCOS = [
   { ano: "2026", texto: "Loja online nova, com pagamento por Pix e cartão e entrega para todo o Brasil." },
 ]
 
-const VALORES = [
-  { titulo: "Feito pra durar", texto: "Tecido grosso, costura reforçada. Peça boa é a que você usa por anos." },
-  { titulo: "Produção local", texto: "Trabalhamos com oficinas de Curitiba e região, que conhecemos pelo nome." },
-  { titulo: "Preço justo", texto: "Sem intermediários: da oficina direto para você." },
-]
-
 export default function SobrePage() {
   return (
     <InfoPage
-      title="Nossa história"
-      subtitle="De uma garagem em Curitiba para todo o Brasil."
+      title="A melhor do Sul do Brasil"
+      subtitle="Bonés e camisetas feitos em Curitiba, com a qualidade que virou referência no Paraná, em Santa Catarina e no Rio Grande do Sul."
     >
+      <InfoSection title="Por que somos a melhor do Sul">
+        <div className="grid sm:grid-cols-2 gap-4">
+          {DIFERENCIAIS.map((d) => (
+            <div key={d.titulo} className="rounded-lg bg-gray-50 p-5">
+              <p className="font-semibold text-petroleo">{d.titulo}</p>
+              <p className="text-sm mt-1">{d.texto}</p>
+            </div>
+          ))}
+        </div>
+      </InfoSection>
+
       <InfoSection title="Como tudo começou">
         <p>
           A Conci nasceu em 2019, quando a gente não encontrava um boné simples, bem feito e com
@@ -35,7 +60,8 @@ export default function SobrePage() {
         </p>
         <p>
           Hoje fazemos bonés e camisetas com o mesmo cuidado do começo: poucos modelos,
-          materiais escolhidos a dedo e atenção em cada pedido.
+          materiais escolhidos a dedo e atenção em cada pedido. É esse cuidado que fez a Conci
+          ser lembrada como a melhor do Sul.
         </p>
       </InfoSection>
 
@@ -49,17 +75,6 @@ export default function SobrePage() {
             </li>
           ))}
         </ol>
-      </InfoSection>
-
-      <InfoSection title="No que acreditamos">
-        <div className="grid sm:grid-cols-3 gap-4">
-          {VALORES.map((v) => (
-            <div key={v.titulo} className="rounded-lg bg-gray-50 p-5">
-              <p className="font-semibold text-petroleo">{v.titulo}</p>
-              <p className="text-sm mt-1">{v.texto}</p>
-            </div>
-          ))}
-        </div>
       </InfoSection>
 
       <div className="text-center">
