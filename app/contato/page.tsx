@@ -4,7 +4,7 @@ import { EnvelopeIcon, ChatBubbleLeftRightIcon, MapPinIcon, ClockIcon } from "@h
 import { InfoPage, InfoSection } from "@/components/InfoPage"
 
 export const metadata: Metadata = {
-  title: "Contato | Conci",
+  title: "Contato",
   description: "Fale com a Conci por email ou WhatsApp.",
 }
 

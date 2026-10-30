@@ -3,7 +3,7 @@ import Link from "next/link"
 import { InfoPage, InfoSection } from "@/components/InfoPage"
 
 export const metadata: Metadata = {
-  title: "Sobre a Conci | A melhor do Sul do Brasil",
+  title: { absolute: "Sobre a Conci | A melhor do Sul do Brasil" },
   description: "Bonés e camisetas feitos em Curitiba: por que a Conci é a melhor loja do Sul do Brasil.",
 }
 

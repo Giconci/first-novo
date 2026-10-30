@@ -3,7 +3,7 @@ import Link from "next/link"
 import { InfoPage, InfoSection } from "@/components/InfoPage"
 
 export const metadata: Metadata = {
-  title: "Trocas e devoluções | Conci",
+  title: "Trocas e devoluções",
   description: "Como trocar ou devolver um produto comprado na Conci.",
 }
 

@@ -1,24 +1,48 @@
 "use client";
 import { useState, useEffect } from "react";
+import { getImageProps } from "next/image";
 import { Search, X } from "lucide-react";
+
+type BannerFile = { src: string; width: number; height: number };
 
 type HeroBanner = {
   id: number;
-  desktop: string;
-  mobile: string;
+  desktop: BannerFile;
+  mobile: BannerFile;
 };
 
+// Banner otimizado pelo Next (versão menor e mais leve para cada tela).
+// Celular (até 768px) usa a foto "mobile"; computador usa a "desktop".
+function BannerImage({ banner, first }: { banner: HeroBanner; first: boolean }) {
+  const common = { alt: "Coleção Conci", sizes: "100vw" };
+  const {
+    props: { srcSet: desktop, ...rest },
+  } = getImageProps({ ...common, ...banner.desktop, fetchPriority: first ? "high" : "auto" });
+  const {
+    props: { srcSet: mobile },
+  } = getImageProps({ ...common, ...banner.mobile });
+
+  return (
+    <picture>
+      <source media="(max-width: 768px)" srcSet={mobile} />
+      <source media="(min-width: 769px)" srcSet={desktop} />
+      <img {...rest} alt={common.alt} className="w-full h-auto object-cover transition-opacity duration-500" />
+    </picture>
+  );
+}
+
 export default function Hero() {
+  // ✏️ Ao trocar uma foto, atualize largura/altura (o Next usa para otimizar)
   const [banners] = useState<HeroBanner[]>([
     {
       id: 1,
-      desktop: "/images/banner1-desktop.jpg",
-      mobile: "/images/banner1-mobile.jpg",
+      desktop: { src: "/images/banner1-desktop.jpg", width: 1920, height: 1280 },
+      mobile: { src: "/images/banner1-mobile.jpg", width: 640, height: 853 },
     },
     {
       id: 2,
-      desktop: "/images/banner2-desktop.jpg",
-      mobile: "/images/banner2-mobile.jpg",
+      desktop: { src: "/images/banner2-desktop.jpg", width: 1920, height: 1280 },
+      mobile: { src: "/images/banner2-mobile.jpg", width: 1920, height: 1280 },
     },
   ]);
 
@@ -47,14 +71,7 @@ export default function Hero() {
 
   return (
     <div className="relative w-full h-64 md:h-96 overflow-hidden">
-      <picture>
-        <source media="(max-width: 768px)" srcSet={banners[current].mobile} />
-        <img
-          src={banners[current].desktop}
-          alt={`Banner ${current + 1}`}
-          className="w-full h-auto object-cover transition-opacity duration-500"
-        />
-      </picture>
+      <BannerImage banner={banners[current]} first={current === 0} />
 
       {/* 🔹 Menu superior com a lupa */}
       <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-end gap-3 p-4">

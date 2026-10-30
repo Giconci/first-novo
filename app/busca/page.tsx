@@ -1,6 +1,7 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 
 type Product = {
@@ -43,11 +44,15 @@ function BuscaContent() {
               className="border border-transparent rounded-lg p-3" // borda invisível (para voltar: tire "border-transparent")
             >
               {p.imageUrl && (
-                <img
-                  src={p.imageUrl}
-                  alt={p.name}
-                  className="w-full h-40 object-cover rounded"
-                />
+                <div className="relative w-full h-40">
+                  <Image
+                    src={p.imageUrl}
+                    alt={p.name}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover rounded"
+                  />
+                </div>
               )}
               <h2 className="font-semibold mt-2">{p.name}</h2>
               {p.category && (

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { useSession } from "next-auth/react"
 import { useCart } from "@/components/ui/context/CartContext" // <-- Importando o contexto
@@ -62,9 +63,11 @@ export default function CarrinhoPage() {
             >
               <div className="flex items-center gap-4">
                 {item.imageUrl && (
-                  <img
+                  <Image
                     src={item.imageUrl}
                     alt={item.name}
+                    width={64}
+                    height={64}
                     className="w-16 h-16 object-cover rounded"
                   />
                 )}

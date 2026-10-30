@@ -3,6 +3,7 @@
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/categories";
 
@@ -266,7 +267,7 @@ export default function AdminPage() {
               <td className="border p-2">{p.category}</td>
               <td className="border p-2">
                 {p.imageUrl && (
-                  <img src={p.imageUrl} alt={p.name} className="h-16 w-16 object-cover" />
+                  <Image src={p.imageUrl} alt={p.name} width={64} height={64} className="h-16 w-16 object-cover" />
                 )}
               </td>
               <td className="border p-2 text-center">{p.showOnHome ? "✅" : "—"}</td>

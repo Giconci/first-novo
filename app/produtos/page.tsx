@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { CATEGORIES } from "@/lib/categories";
@@ -6,6 +8,26 @@ import { disponivel } from "@/lib/stock";
 export const dynamic = "force-dynamic";
 
 const PER_PAGE = 12;
+
+// Título no Google muda conforme a categoria (ex.: "Boné | Conci")
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ categoria?: string }>;
+}): Promise<Metadata> {
+  const { categoria } = await searchParams;
+  const current = CATEGORIES.find((c) => c.slug === categoria);
+  if (!current) {
+    return {
+      title: "Todos os produtos",
+      description: "Bonés, camisetas, calças e tênis da Conci. Envio para todo o Brasil.",
+    };
+  }
+  return {
+    title: current.label,
+    description: `${current.label} da Conci, feitos em Curitiba. Envio para todo o Brasil.`,
+  };
+}
 
 export default async function ProdutosPage({
   searchParams,
@@ -82,11 +104,15 @@ export default async function ProdutosPage({
               className="border border-transparent rounded-lg p-3" // borda invisível (para voltar: tire "border-transparent")
             >
               {p.imageUrl ? (
-                <img
-                  src={p.imageUrl}
-                  alt={p.name}
-                  className="w-full h-40 object-cover rounded"
-                />
+                <div className="relative w-full h-40">
+                  <Image
+                    src={p.imageUrl}
+                    alt={p.name}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover rounded"
+                  />
+                </div>
               ) : (
                 <div className="w-full h-40 bg-gray-100 rounded" />
               )}

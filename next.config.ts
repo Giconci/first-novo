@@ -4,6 +4,10 @@ import { withSentryConfig } from "@sentry/nextjs/config";
 const nextConfig: NextConfig = {
   /* config options here */
    allowedDevOrigins: ["192.168.18.180"],
+  // Fotos dos produtos ficam no Vercel Blob; o <Image> só otimiza imagens destes endereços
+  images: {
+    remotePatterns: [new URL("https://*.public.blob.vercel-storage.com/**")],
+  },
 };
 
 // withSentryConfig envia os "source maps" no build da Vercel, para o Sentry

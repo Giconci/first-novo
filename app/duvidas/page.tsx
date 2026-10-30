@@ -3,7 +3,7 @@ import Link from "next/link"
 import { InfoPage } from "@/components/InfoPage"
 
 export const metadata: Metadata = {
-  title: "Dúvidas frequentes | Conci",
+  title: "Dúvidas frequentes",
   description: "Pagamento, entrega, tamanhos e trocas.",
 }
 

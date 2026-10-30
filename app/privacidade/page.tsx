@@ -4,7 +4,7 @@ import { InfoPage, InfoSection } from "@/components/InfoPage"
 import { ReopenCookieBanner } from "@/components/CookieBanner"
 
 export const metadata: Metadata = {
-  title: "Privacidade e cookies | Conci",
+  title: "Privacidade e cookies",
   description: "Quais dados a Conci coleta, para quê, e quais cookies o site usa.",
 }
 

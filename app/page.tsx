@@ -1,20 +1,24 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import Hero from "@/components/Hero"; 
-import { useCart } from "@/components/ui/context/CartContext"; 
+import Hero from "@/components/Hero";
+import { QuickAddButton } from "@/components/AddToCartButton";
+import { toCartProduct } from "@/lib/cart";
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import { disponivel } from "@/lib/stock";
 import { CATEGORIES } from "@/lib/categories";
 import { TruckIcon, QrCodeIcon, ArrowPathIcon, ShieldCheckIcon } from "@heroicons/react/24/outline";
+
+// Busca no banco a cada visita (produto novo ou esgotado aparece na hora)
+export const dynamic = "force-dynamic";
 
 type Product = {
   id: number;
   name: string;
-  description: string;
+  description: string | null;
   price: number;
-  imageUrl?: string;
-  category: string;
+  imageUrl: string | null;
+  category: string | null;
 };
 
 // 🔹 As duas vitrines da home. Para trocar os produtos em destaque,
@@ -51,13 +55,7 @@ function SectionTitle({ title, category }: { title: string; category: string }) 
   );
 }
 
-function ProductGrid({
-  products,
-  onAdd,
-}: {
-  products: Product[];
-  onAdd: (product: Product) => void;
-}) {
+function ProductGrid({ products }: { products: Product[] }) {
   if (products.length === 0) {
     return <p className="text-gray-500">Novidades em breve.</p>;
   }
@@ -69,25 +67,21 @@ function ProductGrid({
           key={product.id}
           className="border border-transparent rounded-lg p-4 flex flex-col bg-white" // borda invisível (para voltar: tire "border-transparent" e ponha "shadow-sm")
         >
-          <div className="relative group">
+          <div className="relative group h-48">
             {product.imageUrl && (
-              <img
+              <Image
                 src={product.imageUrl}
                 alt={product.name}
-                className="w-full h-48 object-cover rounded"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                className="object-cover rounded"
               />
             )}
             {/* Quick Add no meio da foto:
                 celular (sem mouse) → sempre visível
                 computador (md:)    → só aparece ao passar o mouse */}
             <div className="absolute inset-0 flex md:hidden md:group-hover:flex items-center justify-center rounded md:bg-black/20">
-              <Button
-                variant="secondary"
-                className="bg-white/90 text-petroleo shadow hover:bg-white"
-                onClick={() => onAdd(product)}
-              >
-                Quick Add
-              </Button>
+              <QuickAddButton product={toCartProduct(product)} />
             </div>
           </div>
 
@@ -111,18 +105,12 @@ function ProductGrid({
   );
 }
 
-export default function HomePage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const { addToCart } = useCart();
-
-  useEffect(() => {
-    async function fetchProducts() {
-      const res = await fetch("/api/products?home=true");
-      const data = await res.json();
-      setProducts(data);
-    }
-    fetchProducts();
-  }, []);
+export default async function HomePage() {
+  // Mesmo filtro da /api/products?home=true: marcados para a home, à venda e não arquivados
+  const products = await prisma.product.findMany({
+    where: { showOnHome: true, archived: false, ...disponivel },
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <div className="bg-gray-100 min-h-screen -m-6"> {/* fundo cinza claro; -m-6 encosta nas bordas */}
@@ -148,7 +136,6 @@ export default function HomePage() {
         <SectionTitle title={HOME_SECTIONS.top.title} category={HOME_SECTIONS.top.category} />
         <ProductGrid
           products={products.filter((p) => sameCategory(p.category, HOME_SECTIONS.top.category))}
-          onAdd={addToCart}
         />
       </div>
 
@@ -173,7 +160,6 @@ export default function HomePage() {
         <SectionTitle title={HOME_SECTIONS.bottom.title} category={HOME_SECTIONS.bottom.category} />
         <ProductGrid
           products={products.filter((p) => sameCategory(p.category, HOME_SECTIONS.bottom.category))}
-          onAdd={addToCart}
         />
       </div>
     </div>
