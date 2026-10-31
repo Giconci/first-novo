@@ -11,10 +11,32 @@
 /* 🎨 Cores da loja. Trocou aqui, muda no site inteiro.
    Viram classes do Tailwind: bg-petroleo, text-petroleo-claro, border-petroleo... */
 @theme {
-  --color-petroleo: #36454F;          /* cinza petróleo (botões principais) */
-  --color-petroleo-escuro: #2B3840;   /* ao passar o mouse */
-  --color-petroleo-claro: #5F7D8C;    /* preço e "Ver Detalhes" */
+  /* Tema escuro estilo Steam (loja) */
+  --color-steam-fundo: #1b2838;       /* fundo das páginas */
+  --color-steam-escuro: #171a21;      /* barra do topo, rodapé e faixas */
+  --color-steam-painel: #232f3e;      /* cartões de produto, caixas */
+  --color-steam-texto: #c7d5e0;       /* texto normal */
+  --color-steam-fraco: #8f98a0;       /* texto secundário (descrições, legendas) */
+  --color-neon: #ff1f4b;              /* vermelho neon: botões ao passar o mouse */
+
+  /* Cores antigas: continuam no admin, que ficou claro */
+  --color-petroleo: #36454F;
+  --color-petroleo-escuro: #2B3840;
+  --color-petroleo-claro: #5F7D8C;
   --color-petroleo-claro-escuro: #4E6A78;
+}
+
+/* Botão da loja: branco; ao passar o mouse fica vermelho neon e "brilha".
+   Use a classe btn-neon em links que parecem botão (o <Button> já usa sozinho). */
+@utility btn-neon {
+  background-color: var(--btn-fundo, #fff);
+  color: var(--btn-texto, var(--color-steam-escuro));
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  &:hover {
+    background-color: var(--color-neon);
+    color: #fff;
+    box-shadow: 0 0 8px var(--color-neon), 0 0 20px color-mix(in srgb, var(--color-neon) 60%, transparent);
+  }
 }
 
 @theme inline {
@@ -61,23 +83,24 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* Cores base do site (tema escuro estilo Steam) */
 :root {
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --card: #232f3e;
+  --card-foreground: #c7d5e0;
+  --popover: #232f3e;
+  --popover-foreground: #c7d5e0;
+  --primary: #ffffff;
+  --primary-foreground: #171a21;
+  --secondary: #2a475e;
+  --secondary-foreground: #ffffff;
+  --muted: #2a3a4d;
+  --muted-foreground: #8f98a0;
+  --accent: #2a475e;
+  --accent-foreground: #ffffff;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: rgb(255 255 255 / 12%);
+  --input: rgb(255 255 255 / 20%);
+  --ring: #ff1f4b;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -92,8 +115,33 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --background: #1b2838;
+  --foreground: #c7d5e0;
+}
+
+/* Área clara (o admin): volta as cores base para o tema claro original */
+.tema-claro {
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
+  --btn-fundo: var(--color-petroleo); /* no admin o botão é petróleo (branco sumiria no fundo branco) */
+  --btn-texto: #fff;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 .dark {

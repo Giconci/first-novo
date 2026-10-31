@@ -53,7 +53,7 @@ export default function CarrinhoPage() {
       <h1 className="text-2xl font-bold mb-6">Seu Carrinho</h1>
 
       {cart.length === 0 ? (
-        <p className="text-gray-600">Seu carrinho está vazio.</p>
+        <p className="text-muted-foreground">Seu carrinho está vazio.</p>
       ) : (
         <div className="space-y-4">
           {cart.map((item) => (
@@ -73,7 +73,7 @@ export default function CarrinhoPage() {
                 )}
                 <div>
                   <h2 className="text-lg font-semibold">{item.name}</h2>
-                  <p className="text-sm text-gray-500">R$ {item.price.toFixed(2)} cada</p>
+                  <p className="text-sm text-muted-foreground">R$ {item.price.toFixed(2)} cada</p>
                 </div>
               </div>
 
@@ -107,7 +107,7 @@ export default function CarrinhoPage() {
             {status === "unauthenticated" ? (
               // 🔒 Sem conta não finaliza: entra ou cadastra e volta pra cá
               <div className="mt-2 space-y-2">
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                   Para finalizar a compra, entre na sua conta.
                 </p>
                 <div className="flex justify-end gap-2">
@@ -119,7 +119,7 @@ export default function CarrinhoPage() {
                   </Link>
                   <Link
                     href="/login?callbackUrl=/carrinho"
-                    className={buttonVariants({ className: "bg-petroleo text-white hover:bg-petroleo-escuro" })}
+                    className={buttonVariants()}
                   >
                     Entrar
                   </Link>

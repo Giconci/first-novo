@@ -7,7 +7,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 import { useCart } from "@/components/ui/context/CartContext"
 import { SkateIcon } from "@/components/SkateIcon"
 
-const linkClass = "px-2 py-1 rounded hover:bg-gray-100"
+const linkClass = "px-2 py-1 rounded hover:bg-white/10 hover:text-neon"
 
 // Barra do topo.
 //   computador (md: = tela ≥ 768px) → links em linha
@@ -51,11 +51,11 @@ export function NavBar() {
   )
 
   return (
-    <nav className="border-b p-4">
+    <nav className="border-b p-4 bg-steam-escuro">
       <div className="flex gap-4 items-center">
         {/* ☰ só no celular */}
         <button
-          className="md:hidden p-1 rounded hover:bg-gray-100"
+          className="md:hidden p-1 rounded hover:bg-white/10"
           onClick={() => setOpen(!open)}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
           aria-expanded={open}
@@ -64,7 +64,7 @@ export function NavBar() {
         </button>
 
         {/* Marca da loja: leva para a home */}
-        <Link href="/" className="text-xl font-bold tracking-widest text-petroleo" onClick={close}>
+        <Link href="/" className="text-xl font-bold tracking-widest text-white" onClick={close}>
           CONCI
         </Link>
 
@@ -84,7 +84,7 @@ export function NavBar() {
           onClick={close}
           aria-label="Carrinho"
         >
-          <SkateIcon className="h-7 w-7 md:h-8 md:w-8 text-gray-700 hover:text-black" />
+          <SkateIcon className="h-7 w-7 md:h-8 md:w-8 text-foreground hover:text-neon" />
           <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
             {count}
           </span>

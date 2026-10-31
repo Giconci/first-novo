@@ -110,7 +110,7 @@ export function AddressForm({ onSubmit, loading }: Props) {
         <div className="text-right">
           <Button
             type="submit"
-            className="bg-petroleo text-white hover:bg-petroleo-escuro"
+            
             disabled={loading}
           >
             {loading ? "Indo para o pagamento..." : "Ir para o pagamento"}

@@ -51,7 +51,7 @@ export default function PrivacidadePage() {
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="text-left text-gray-500">
+            <thead className="text-left text-muted-foreground">
               <tr>
                 <th className="pb-2 pr-4 font-normal">Nome</th>
                 <th className="pb-2 pr-4 font-normal">Tipo</th>
@@ -84,7 +84,7 @@ export default function PrivacidadePage() {
         <p>
           Pela Lei Geral de Proteção de Dados, você pode pedir para ver, corrigir ou apagar seus
           dados a qualquer momento. É só falar com a gente pelo{" "}
-          <Link href="/contato" className="underline text-petroleo">contato</Link>. Dados de
+          <Link href="/contato" className="underline text-white">contato</Link>. Dados de
           pedidos podem ser mantidos pelo prazo exigido pela lei fiscal.
         </p>
       </InfoSection>

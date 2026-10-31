@@ -93,7 +93,7 @@ export default async function PedidoPage(props: PageProps<"/pedido/[resultado]">
       {deuCerto && <ClearCart />}
 
       <p>{msg.text}</p>
-      <p className="text-sm text-gray-500">Pedido nº {order.id}</p>
+      <p className="text-sm text-muted-foreground">Pedido nº {order.id}</p>
 
       <ul className="divide-y border rounded-lg">
         {order.products.map((item) => (

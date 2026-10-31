@@ -56,7 +56,7 @@ function BuscaContent() {
               )}
               <h2 className="font-semibold mt-2">{p.name}</h2>
               {p.category && (
-                <p className="text-sm text-gray-500">{p.category}</p>
+                <p className="text-sm text-muted-foreground">{p.category}</p>
               )}
               <p className="font-bold mt-1">
                 {p.price.toLocaleString("pt-BR", {

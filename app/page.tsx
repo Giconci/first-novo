@@ -47,7 +47,7 @@ function SectionTitle({ title, category }: { title: string; category: string }) 
       <h2 className="text-2xl font-bold">{title}</h2>
       <Link
         href={slug ? `/produtos?categoria=${slug}` : "/produtos"}
-        className="text-sm text-petroleo hover:underline"
+        className="text-sm text-white hover:underline"
       >
         Ver todos →
       </Link>
@@ -57,7 +57,7 @@ function SectionTitle({ title, category }: { title: string; category: string }) 
 
 function ProductGrid({ products }: { products: Product[] }) {
   if (products.length === 0) {
-    return <p className="text-gray-500">Novidades em breve.</p>;
+    return <p className="text-muted-foreground">Novidades em breve.</p>;
   }
 
   return (
@@ -65,7 +65,7 @@ function ProductGrid({ products }: { products: Product[] }) {
       {products.map((product) => (
         <div
           key={product.id}
-          className="border border-transparent rounded-lg p-4 flex flex-col bg-white" // borda invisível (para voltar: tire "border-transparent" e ponha "shadow-sm")
+          className="border border-transparent rounded-lg p-4 flex flex-col bg-card" // borda invisível (para voltar: tire "border-transparent" e ponha "shadow-sm")
         >
           <div className="relative group h-48">
             {product.imageUrl && (
@@ -89,12 +89,12 @@ function ProductGrid({ products }: { products: Product[] }) {
             <h2 className="text-lg font-semibold">{product.name}</h2>
             <p className="text-sm text-muted-foreground">{product.description}</p>
             {/* Cinza petróleo claro (cores no app/globals.css) */}
-            <p className="text-lg font-bold text-petroleo-claro mt-2">
+            <p className="text-lg font-bold text-white mt-2">
               R$ {product.price.toFixed(2)}
             </p>
 
             <Link href={`/produto/${product.id}`}>
-              <Button className="mt-2 bg-petroleo-claro text-white hover:bg-petroleo-claro-escuro">
+              <Button className="mt-2">
                 Ver Detalhes
               </Button>
             </Link>
@@ -113,18 +113,18 @@ export default async function HomePage() {
   });
 
   return (
-    <div className="bg-gray-100 min-h-screen -m-6"> {/* fundo cinza claro; -m-6 encosta nas bordas */}
+    <div className="min-h-screen -m-6"> {/* -m-6 encosta nas bordas */}
       <Hero />
 
       {/* Vantagens logo abaixo do banner */}
-      <div className="bg-white border-y">
+      <div className="bg-steam-escuro border-y">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-6 py-5 text-sm">
           {VANTAGENS.map((v) => (
             <div key={v.titulo} className="flex items-center gap-3">
-              <v.icon className="h-7 w-7 shrink-0 text-petroleo-claro" />
+              <v.icon className="h-7 w-7 shrink-0 text-white" />
               <div>
-                <p className="font-semibold text-petroleo">{v.titulo}</p>
-                <p className="text-gray-500">{v.texto}</p>
+                <p className="font-semibold text-white">{v.titulo}</p>
+                <p className="text-muted-foreground">{v.texto}</p>
               </div>
             </div>
           ))}
@@ -140,7 +140,7 @@ export default async function HomePage() {
       </div>
 
       {/* Faixa da história: chama para a página /sobre */}
-      <section className="mt-12 bg-petroleo text-white rounded-lg mx-6 px-6 py-12 text-center">
+      <section className="mt-12 bg-steam-escuro text-white rounded-lg mx-6 px-6 py-12 text-center">
         <p className="text-sm uppercase tracking-widest text-white/60">Desde 2019</p>
         <h2 className="text-2xl md:text-3xl font-bold mt-2">Feito em Curitiba, pensado pra durar</h2>
         <p className="mt-3 text-white/80 max-w-xl mx-auto">
@@ -149,7 +149,7 @@ export default async function HomePage() {
         </p>
         <Link
           href="/sobre"
-          className="inline-block mt-6 rounded-md bg-white px-6 py-3 text-petroleo font-medium hover:bg-gray-100"
+          className="inline-block mt-6 rounded-md btn-neon px-6 py-3 font-medium"
         >
           Conheça nossa história
         </Link>

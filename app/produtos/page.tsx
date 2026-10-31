@@ -72,7 +72,7 @@ export default async function ProdutosPage({
         <Link
           href="/produtos"
           className={`px-4 py-2 rounded-full border text-sm ${
-            !current ? "bg-black text-white" : "hover:bg-gray-100"
+            !current ? "bg-white text-steam-escuro" : "hover:bg-neon hover:border-neon hover:text-white"
           }`}
         >
           Todos
@@ -83,8 +83,8 @@ export default async function ProdutosPage({
             href={`/produtos?categoria=${c.slug}`}
             className={`px-4 py-2 rounded-full border text-sm ${
               current?.slug === c.slug
-                ? "bg-black text-white"
-                : "hover:bg-gray-100"
+                ? "bg-white text-steam-escuro"
+                : "hover:bg-neon hover:border-neon hover:text-white"
             }`}
           >
             {c.label}
@@ -114,7 +114,7 @@ export default async function ProdutosPage({
                   />
                 </div>
               ) : (
-                <div className="w-full h-40 bg-gray-100 rounded" />
+                <div className="w-full h-40 bg-card rounded" />
               )}
               <h2 className="font-semibold mt-2">{p.name}</h2>
               <p className="font-bold mt-1">

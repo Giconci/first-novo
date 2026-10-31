@@ -12,7 +12,7 @@ export function AddToCartButton({ product, soldOut }: { product: CartProduct; so
   // stock 0 = esgotado (vazio = sem controle de estoque)
   if (soldOut) {
     return (
-      <Button disabled className="bg-gray-300 text-gray-600">
+      <Button disabled variant="outline">
         Esgotado
       </Button>
     )
@@ -20,7 +20,6 @@ export function AddToCartButton({ product, soldOut }: { product: CartProduct; so
 
   return (
     <Button
-      className="bg-petroleo text-white hover:bg-petroleo-escuro"
       onClick={() => addToCart(product)}
     >
       Adicionar ao Carrinho
@@ -33,8 +32,7 @@ export function QuickAddButton({ product }: { product: CartProduct }) {
 
   return (
     <Button
-      variant="secondary"
-      className="bg-white/90 text-petroleo shadow hover:bg-white"
+      className="shadow"
       onClick={() => addToCart(product)}
     >
       Quick Add

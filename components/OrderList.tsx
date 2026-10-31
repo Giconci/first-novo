@@ -30,8 +30,8 @@ const STATUS: Record<string, { label: string; color: string }> = {
 }
 
 // Cor dos botões: cinza petróleo (definida no app/globals.css)
-const PETROLEO = "bg-petroleo text-white hover:bg-petroleo-escuro"
-const PETROLEO_OUTLINE = "border-petroleo text-petroleo hover:bg-petroleo/10"
+const PETROLEO = "btn-neon"
+const PETROLEO_OUTLINE = ""
 
 // Filtros do admin (o cliente sempre vê tudo dele)
 const FILTERS = [
@@ -96,7 +96,7 @@ export function OrderList({ admin = false }: { admin?: boolean }) {
         </div>
       )}
 
-      {visible.length === 0 && <p className="text-gray-600">Nenhum pedido por aqui.</p>}
+      {visible.length === 0 && <p className="text-muted-foreground">Nenhum pedido por aqui.</p>}
 
       {visible.map((order) => {
         const st = STATUS[order.status] ?? STATUS.pending
@@ -106,7 +106,7 @@ export function OrderList({ admin = false }: { admin?: boolean }) {
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <p className="font-semibold">Pedido nº {order.id}</p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   {new Date(order.createdAt).toLocaleString("pt-BR")}
                 </p>
               </div>
@@ -124,7 +124,7 @@ export function OrderList({ admin = false }: { admin?: boolean }) {
             <p className="text-right font-bold">Total: R$ {order.total.toFixed(2)}</p>
 
             {a && (
-              <div className="text-sm bg-gray-50 rounded p-3">
+              <div className="text-sm bg-muted rounded p-3">
                 <p className="font-semibold">Entrega para {a.name}</p>
                 {admin && <p>{order.user.email} · Tel. {a.phone}</p>}
                 <p>

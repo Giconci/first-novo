@@ -1,66 +1,28 @@
 "use client";
 import { useState, useEffect } from "react";
-import { getImageProps } from "next/image";
+import Image from "next/image";
 import { Search, X } from "lucide-react";
 
-type BannerFile = { src: string; width: number; height: number };
-
-type HeroBanner = {
-  id: number;
-  desktop: BannerFile;
-  mobile: BannerFile;
-};
-
-// Banner otimizado pelo Next (versão menor e mais leve para cada tela).
-// Celular (até 768px) usa a foto "mobile"; computador usa a "desktop".
-function BannerImage({ banner, first }: { banner: HeroBanner; first: boolean }) {
-  const common = { alt: "Coleção Conci", sizes: "100vw" };
-  const {
-    props: { srcSet: desktop, ...rest },
-  } = getImageProps({ ...common, ...banner.desktop, fetchPriority: first ? "high" : "auto" });
-  const {
-    props: { srcSet: mobile },
-  } = getImageProps({ ...common, ...banner.mobile });
-
-  return (
-    <picture>
-      <source media="(max-width: 768px)" srcSet={mobile} />
-      <source media="(min-width: 769px)" srcSet={desktop} />
-      <img {...rest} alt={common.alt} className="w-full h-auto object-cover transition-opacity duration-500" />
-    </picture>
-  );
-}
+// ✏️ Fotos do banner, na ordem em que aparecem (todas ficam em public/images).
+// Para tirar uma foto, apague a linha; para pôr outra, copie uma linha e troque o nome.
+// Só estas aparecem: outras fotos na pasta são ignoradas.
+const BANNERS = [
+  "/images/banner2-desktop.jpg",
+  "/images/jan-kopriva-An-PNdZ0gxw-unsplash.jpg",
+];
 
 export default function Hero() {
-  // ✏️ Ao trocar uma foto, atualize largura/altura (o Next usa para otimizar)
-  const [banners] = useState<HeroBanner[]>([
-    {
-      id: 1,
-      desktop: { src: "/images/banner1-desktop.jpg", width: 1920, height: 1280 },
-      mobile: { src: "/images/banner1-mobile.jpg", width: 640, height: 853 },
-    },
-    {
-      id: 2,
-      desktop: { src: "/images/banner2-desktop.jpg", width: 1920, height: 1280 },
-      mobile: { src: "/images/banner2-mobile.jpg", width: 1920, height: 1280 },
-    },
-  ]);
-
   const [current, setCurrent] = useState(0);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
 
-  // 🔹 Troca o banner a cada 15 segundos (15000 milissegundos)
+  // 🔹 Troca o banner a cada 10 segundos (10000 milissegundos); depois do último, volta ao primeiro
   useEffect(() => {
-    if (banners.length > 0) {
-      const interval = setInterval(() => {
-        setCurrent((prev) => (prev + 1) % banners.length);
-      }, 15000);
-      return () => clearInterval(interval);
-    }
-  }, [banners]);
-
-  if (banners.length === 0) return null;
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % BANNERS.length);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,7 +33,21 @@ export default function Hero() {
 
   return (
     <div className="relative w-full h-64 md:h-96 overflow-hidden">
-      <BannerImage banner={banners[current]} first={current === 0} />
+      {/* Todas as fotos ficam empilhadas; só a atual fica visível.
+          A troca é um "fade" de 1,5 segundo (duration-1500). */}
+      {BANNERS.map((src, i) => (
+        <Image
+          key={src}
+          src={src}
+          alt="Coleção Conci"
+          fill
+          sizes="100vw"
+          preload={i === 0}
+          className={`object-cover transition-opacity duration-1500 ease-in-out ${
+            i === current ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      ))}
 
       {/* 🔹 Menu superior com a lupa */}
       <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-end gap-3 p-4">
@@ -95,7 +71,7 @@ export default function Hero() {
           type="button"
           onClick={() => setSearchOpen((prev) => !prev)}
           aria-label={searchOpen ? "Fechar busca" : "Abrir busca"}
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-white/90 text-black shadow-lg hover:bg-white transition"
+          className="flex items-center justify-center w-10 h-10 rounded-full btn-neon shadow-lg"
         >
           {searchOpen ? <X size={20} /> : <Search size={20} />}
         </button>

@@ -22,7 +22,7 @@ export default function TrocasPage() {
         <ol className="space-y-4">
           {PASSOS.map((passo, i) => (
             <li key={i} className="flex gap-4">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-petroleo text-white font-bold">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-neon text-white font-bold">
                 {i + 1}
               </span>
               <p className="pt-1">{passo}</p>
@@ -50,7 +50,7 @@ export default function TrocasPage() {
       <InfoSection title="Produto com defeito">
         <p>
           Se chegou com defeito, a troca é sempre por nossa conta, em até 90 dias. Mande uma foto pelo{" "}
-          <Link href="/contato" className="underline text-petroleo">contato</Link> que resolvemos rápido.
+          <Link href="/contato" className="underline text-white">contato</Link> que resolvemos rápido.
         </p>
       </InfoSection>
     </InfoPage>

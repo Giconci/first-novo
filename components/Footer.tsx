@@ -30,7 +30,7 @@ const COLUNAS = [
 
 export function Footer() {
   return (
-    <footer className="bg-petroleo text-white/80">
+    <footer className="bg-steam-escuro text-muted-foreground">
       <div className="max-w-6xl mx-auto px-6 py-12 grid gap-8 sm:grid-cols-2 md:grid-cols-4">
         <div>
           <p className="text-2xl font-bold text-white tracking-widest">CONCI</p>

@@ -41,8 +41,8 @@ export default function ContatoPage() {
         {CANAIS.map((c) => {
           const conteudo = (
             <>
-              <c.icon className="h-7 w-7 text-petroleo-claro" />
-              <p className="font-semibold text-petroleo mt-3">{c.titulo}</p>
+              <c.icon className="h-7 w-7 text-white" />
+              <p className="font-semibold text-white mt-3">{c.titulo}</p>
               <p className="text-sm">{c.texto}</p>
             </>
           )
@@ -52,12 +52,12 @@ export default function ContatoPage() {
               href={c.href}
               target={c.href.startsWith("http") ? "_blank" : undefined}
               rel="noreferrer"
-              className="rounded-lg bg-gray-50 p-5 hover:bg-gray-100 transition"
+              className="rounded-lg bg-card p-5 hover:bg-white/10 transition"
             >
               {conteudo}
             </a>
           ) : (
-            <div key={c.titulo} className="rounded-lg bg-gray-50 p-5">
+            <div key={c.titulo} className="rounded-lg bg-card p-5">
               {conteudo}
             </div>
           )
@@ -66,8 +66,8 @@ export default function ContatoPage() {
 
       <InfoSection title="Antes de escrever">
         <p>
-          Muita coisa já está respondida em <Link href="/duvidas" className="underline text-petroleo">Dúvidas frequentes</Link> e
-          em <Link href="/trocas" className="underline text-petroleo">Trocas e devoluções</Link>. Se for sobre um pedido,
+          Muita coisa já está respondida em <Link href="/duvidas" className="underline text-white">Dúvidas frequentes</Link> e
+          em <Link href="/trocas" className="underline text-white">Trocas e devoluções</Link>. Se for sobre um pedido,
           mande o <strong>número do pedido</strong> (está em "Meus pedidos") que agiliza bastante.
         </p>
       </InfoSection>

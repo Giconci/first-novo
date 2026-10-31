@@ -44,8 +44,8 @@ export default function SobrePage() {
       <InfoSection title="Por que somos a melhor do Sul">
         <div className="grid sm:grid-cols-2 gap-4">
           {DIFERENCIAIS.map((d) => (
-            <div key={d.titulo} className="rounded-lg bg-gray-50 p-5">
-              <p className="font-semibold text-petroleo">{d.titulo}</p>
+            <div key={d.titulo} className="rounded-lg bg-card p-5">
+              <p className="font-semibold text-white">{d.titulo}</p>
               <p className="text-sm mt-1">{d.texto}</p>
             </div>
           ))}
@@ -66,11 +66,11 @@ export default function SobrePage() {
       </InfoSection>
 
       <InfoSection title="Nossa trajetória">
-        <ol className="border-l-2 border-petroleo-claro/40 pl-6 space-y-6">
+        <ol className="border-l-2 border-white/20 pl-6 space-y-6">
           {MARCOS.map((m) => (
             <li key={m.ano} className="relative">
-              <span className="absolute -left-[33px] top-1 h-4 w-4 rounded-full bg-petroleo-claro" />
-              <p className="font-bold text-petroleo">{m.ano}</p>
+              <span className="absolute -left-[33px] top-1 h-4 w-4 rounded-full bg-neon" />
+              <p className="font-bold text-white">{m.ano}</p>
               <p>{m.texto}</p>
             </li>
           ))}
@@ -80,7 +80,7 @@ export default function SobrePage() {
       <div className="text-center">
         <Link
           href="/produtos"
-          className="inline-block rounded-md bg-petroleo px-6 py-3 text-white hover:bg-petroleo-escuro"
+          className="inline-block rounded-md btn-neon px-6 py-3"
         >
           Conheça os produtos
         </Link>

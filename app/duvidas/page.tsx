@@ -48,16 +48,16 @@ export default function DuvidasPage() {
   return (
     <InfoPage title="Dúvidas frequentes" subtitle="As perguntas que mais recebemos.">
       {/* <details> abre e fecha sozinho, sem JavaScript */}
-      <div className="divide-y rounded-lg border bg-white">
+      <div className="divide-y rounded-lg border bg-card">
         {PERGUNTAS.map((item) => (
           <details key={item.p} className="group p-5">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-petroleo">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-white">
               {item.p}
               <span className="text-xl transition group-open:rotate-45">+</span>
             </summary>
             <p className="mt-3">{item.r}</p>
             {item.link && (
-              <Link href={item.link.href} className="mt-2 inline-block underline text-petroleo">
+              <Link href={item.link.href} className="mt-2 inline-block underline text-white">
                 {item.link.texto}
               </Link>
             )}
@@ -67,7 +67,7 @@ export default function DuvidasPage() {
 
       <p className="text-center">
         Não achou o que procurava?{" "}
-        <Link href="/contato" className="underline text-petroleo">Fale com a gente</Link>.
+        <Link href="/contato" className="underline text-white">Fale com a gente</Link>.
       </p>
     </InfoPage>
   )
