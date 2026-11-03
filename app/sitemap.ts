@@ -14,7 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     select: { id: true, updatedAt: true },
   })
 
-  const paginas = ["", "/produtos", "/sobre", "/contato", "/duvidas", "/trocas", "/privacidade"]
+  const paginas = ["", "/produtos", "/sobre", "/sobre-nos", "/contato", "/duvidas", "/trocas", "/privacidade"]
 
   return [
     ...paginas.map((path) => ({ url: `${SITE_URL}${path}` })),

@@ -14,6 +14,7 @@ const COLUNAS = [
     titulo: "A Conci",
     links: [
       { href: "/sobre", texto: "Nossa história" },
+      { href: "/sobre-nos", texto: "Sobre nós" },
       { href: "/contato", texto: "Contato" },
     ],
   },
@@ -54,8 +55,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10 py-4 text-center text-xs">
-        © {new Date().getFullYear()} Conci · Pagamentos processados pelo Mercado Pago
-      </div>
+        © {new Date().getFullYear()} Conci · Pagamentos processados pelo Mercado Pago      </div>
     </footer>
   )
 }

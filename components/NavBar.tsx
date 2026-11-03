@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useSession, signOut } from "next-auth/react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 import { useCart } from "@/components/ui/context/CartContext"
@@ -17,7 +18,12 @@ export function NavBar() {
   const { count } = useCart()
   const [open, setOpen] = useState(false) // menu do celular aberto?
 
+  const pathname = usePathname()
+
   const close = () => setOpen(false) // fecha ao clicar num link
+
+  // Página do portfólio tem visual próprio, sem o menu da loja
+  if (pathname.startsWith("/sobre-nos")) return null
 
   // Os mesmos links servem para o computador e para o celular
   const links = (
