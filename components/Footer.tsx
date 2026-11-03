@@ -1,4 +1,7 @@
+"use client" // precisa saber em qual página está (usePathname)
+
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 // Rodapé de todas as páginas (fica no app/layout.tsx)
 const COLUNAS = [
@@ -30,6 +33,11 @@ const COLUNAS = [
 ]
 
 export function Footer() {
+  const pathname = usePathname()
+
+  // Página do portfólio tem visual próprio, sem o rodapé da loja
+  if (pathname.startsWith("/sobre-nos")) return null
+
   return (
     <footer className="bg-steam-escuro text-muted-foreground">
       <div className="max-w-6xl mx-auto px-6 py-12 grid gap-8 sm:grid-cols-2 md:grid-cols-4">

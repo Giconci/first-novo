@@ -76,7 +76,8 @@ export async function checkEmailCode(userId: string, code: string) {
   return true;
 }
 
-async function sendEmail(to: string, subject: string, html: string) {
+// replyTo: quando você clicar em "Responder", vai para esse email (ex.: quem mandou a mensagem)
+export async function sendEmail(to: string, subject: string, html: string, replyTo?: string) {
   // Sem senha de app configurada (ex.: antes de configurar o Gmail),
   // só mostra o email no terminal
   if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
@@ -97,5 +98,6 @@ async function sendEmail(to: string, subject: string, html: string) {
     to,
     subject,
     html,
+    replyTo,
   });
 }
