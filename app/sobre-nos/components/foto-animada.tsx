@@ -8,7 +8,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 // - começa invisível e vai aparecendo conforme a página desce
 // - aparece em preto e branco e, quando fica totalmente visível, ganha as cores
 // - passando o mouse por cima, mostra sempre a cor original
-// ✏️ A foto fica em public/guifoto.jpg
+// ✏️ A foto fica em public/images/guifoto.jpg
 export function FotoAnimada() {
   const caixa = useRef<HTMLDivElement>(null)
   const semAnimacao = useReducedMotion() // quem pediu ao computador pra reduzir animações vê a foto direto
@@ -37,7 +37,7 @@ export function FotoAnimada() {
         style={semAnimacao ? undefined : { filter: filtro }}
       >
         <Image
-          src="/guifoto.jpg"
+          src="/images/guifoto.jpg"
           alt="Foto de Guilherme Luz Conci"
           fill
           sizes="(min-width: 768px) 384px, 100vw"

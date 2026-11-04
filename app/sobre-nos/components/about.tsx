@@ -1,7 +1,7 @@
 import { FotoAnimada } from "./foto-animada"
 import { PONTOS_ESCUROS, Rotulo, TEXTO } from "./estilo"
 
-// ✏️ Seus dados. A foto fica em public/guifoto.jpg
+// ✏️ Seus dados. A foto fica em public/images/guifoto.jpg
 const DADOS = [
   { rotulo: "Idade", valor: "32" },
   { rotulo: "Celular", valor: "+55 41 98401-9897", href: "tel:+5541984019897" },
