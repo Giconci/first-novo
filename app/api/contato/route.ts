@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { sendEmail } from "@/lib/emailVerification";
+import { escapar, sendEmail } from "@/lib/emailVerification";
 
 // ✏️ Email que recebe as mensagens do formulário do portfólio (/sobre-nos)
 const DESTINO = "gui.conci@hotmail.com";
@@ -17,16 +17,6 @@ const contatoSchema = z.object({
 // (fica na memória do servidor, então é um freio simples, não uma garantia)
 const ultimoEnvio = new Map<string, number>();
 const INTERVALO_MS = 60 * 1000;
-
-// Impede que o texto digitado vire HTML dentro do email
-function escapar(texto: string) {
-  return texto
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
 
 export async function POST(req: Request) {
   const parsed = contatoSchema.safeParse(await req.json().catch(() => null));

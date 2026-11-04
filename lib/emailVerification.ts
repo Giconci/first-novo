@@ -76,6 +76,16 @@ export async function checkEmailCode(userId: string, code: string) {
   return true;
 }
 
+// Impede que um texto digitado por alguém vire HTML dentro do email
+export function escapar(texto: string) {
+  return texto
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // replyTo: quando você clicar em "Responder", vai para esse email (ex.: quem mandou a mensagem)
 export async function sendEmail(to: string, subject: string, html: string, replyTo?: string) {
   // Sem senha de app configurada (ex.: antes de configurar o Gmail),

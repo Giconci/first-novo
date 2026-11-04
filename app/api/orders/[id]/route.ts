@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { getSessionUser, requireAdmin } from "@/lib/session";
+import { avisarCliente } from "@/lib/orderEmails";
 
 // GET /api/orders/:id → um pedido (só o dono ou o admin)
 export async function GET(_req: NextRequest, ctx: RouteContext<"/api/orders/[id]">) {
@@ -43,12 +44,24 @@ export async function PATCH(req: NextRequest, ctx: RouteContext<"/api/orders/[id
   }
 
   try {
-    const order = await prisma.order.update({
-      where: { id: orderId },
+    const atual = await prisma.order.findUnique({ where: { id: orderId }, select: { status: true } });
+    if (!atual) {
+      return NextResponse.json({ error: "Pedido não encontrado" }, { status: 404 });
+    }
+
+    // Só muda se ninguém mudou antes: dois cliques seguidos não mandam dois emails
+    const { count } = await prisma.order.updateMany({
+      where: { id: orderId, status: atual.status },
       data: { status: parsed.data.status },
     });
+    if (count > 0 && atual.status !== parsed.data.status) {
+      await avisarCliente(orderId, atual.status, parsed.data.status);
+    }
+
+    const order = await prisma.order.findUnique({ where: { id: orderId } });
     return NextResponse.json(order);
-  } catch {
-    return NextResponse.json({ error: "Pedido não encontrado" }, { status: 404 });
+  } catch (error) {
+    console.error("Erro ao mudar status do pedido:", error);
+    return NextResponse.json({ error: "Não foi possível mudar o status" }, { status: 500 });
   }
 }

@@ -5,6 +5,9 @@ import type { Prisma } from "@prisma/client";
 //   0    → esgotado: some da loja até o admin repor
 //   N    → N unidades; cada venda paga desconta (lib/payment.ts)
 
+// ✏️ Com esta quantidade ou menos, o admin recebe o email "Estoque acabando"
+export const ESTOQUE_BAIXO = 3;
+
 // Filtro do Prisma para "pode ser vendido agora"
 export const disponivel: Prisma.ProductWhereInput = {
   OR: [{ stock: null }, { stock: { gt: 0 } }],

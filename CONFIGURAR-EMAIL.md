@@ -25,6 +25,7 @@ Enquanto o Gmail não estiver configurado, o código aparece **no terminal** do 
 | Arquivo | Faz o quê |
 |---|---|
 | `lib/emailVerification.ts` | Gera, confere e envia o código (usa o nodemailer) |
+| `lib/orderEmails.ts` | Emails dos pedidos: cliente (aprovado, recusado, cancelado, enviado) e admin (nova venda, estoque acabando) |
 | `app/api/login-code/route.ts` | 1ª etapa do login: confere email/senha e manda o código |
 | `app/api/register/route.ts` | Cria a conta e manda o código |
 | `app/api/auth/[...nextauth]/route.ts` | 2ª etapa: só deixa entrar com o código certo |
