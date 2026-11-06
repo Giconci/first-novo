@@ -116,16 +116,27 @@ export default async function HomePage() {
     <div className="min-h-screen -m-6"> {/* -m-6 encosta nas bordas */}
       <Hero />
 
-      {/* Vantagens logo abaixo do banner */}
-      <div className="bg-steam-escuro border-y">
-        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-6 py-5 text-sm">
-          {VANTAGENS.map((v) => (
-            <div key={v.titulo} className="flex items-center gap-3">
-              <v.icon className="h-7 w-7 shrink-0 text-white" />
-              <div>
-                <p className="font-semibold text-white">{v.titulo}</p>
-                <p className="text-muted-foreground">{v.texto}</p>
-              </div>
+      {/* Vantagens logo abaixo do banner: carrossel sem fim (velocidade no app/globals.css).
+          São 2 cópias iguais lado a lado. A faixa anda até o fim da 1ª cópia e recomeça,
+          e como a 2ª está no mesmo lugar, o salto não aparece.
+          Quem pediu ao computador para reduzir animações vê a faixa parada. */}
+      <div className="overflow-hidden bg-steam-escuro border-y">
+        <div className="flex w-max animate-carrossel motion-reduce:w-full motion-reduce:animate-none">
+          {[0, 1].map((copia) => (
+            <div
+              key={copia}
+              aria-hidden={copia === 1} // leitor de tela lê só a 1ª cópia
+              className={`flex min-w-screen shrink-0 justify-around gap-12 px-6 py-5 text-sm motion-reduce:min-w-0 motion-reduce:w-full motion-reduce:flex-wrap motion-reduce:gap-6 ${copia === 1 ? "motion-reduce:hidden" : ""}`}
+            >
+              {VANTAGENS.map((v) => (
+                <div key={v.titulo} className="flex items-center gap-3 whitespace-nowrap">
+                  <v.icon className="h-7 w-7 shrink-0 text-white" />
+                  <div>
+                    <p className="font-semibold text-white">{v.titulo}</p>
+                    <p className="text-muted-foreground">{v.texto}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           ))}
         </div>
