@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { syncPayment } from "@/lib/payment";
+import { registrarErro } from "@/lib/registrarErro";
 
 // POST /api/webhooks/mercadopago → o Mercado Pago avisa aqui quando um pagamento muda
 // (aprovado, recusado, Pix caiu...), mesmo que o cliente tenha fechado a aba.
@@ -30,7 +31,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   } catch (error) {
     // Erro 500 faz o Mercado Pago tentar de novo mais tarde
-    console.error("Webhook MP: erro ao consultar pagamento", paymentId, error);
+    await registrarErro(error, "webhook-mercadopago", { pagamento: paymentId });
     return NextResponse.json({ error: "Falha ao processar" }, { status: 500 });
   }
 }

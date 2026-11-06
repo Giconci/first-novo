@@ -4,6 +4,7 @@ import { Preference } from "mercadopago";
 import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/session";
 import { getMercadoPago } from "@/lib/mercadopago";
+import { registrarErro } from "@/lib/registrarErro";
 import { addressSchema } from "@/schemas/addressSchema";
 
 // O navegador manda só QUAIS produtos e QUANTOS. O preço vem sempre do banco,
@@ -114,7 +115,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ orderId: order.id, url: preference.init_point });
   } catch (error) {
-    console.error("Erro ao criar pagamento no Mercado Pago:", error);
+    await registrarErro(error, "checkout", { pedido: order.id });
     await prisma.order.update({ where: { id: order.id }, data: { status: "cancelled" } });
     return NextResponse.json(
       { error: "Não foi possível iniciar o pagamento. Tente de novo." },
