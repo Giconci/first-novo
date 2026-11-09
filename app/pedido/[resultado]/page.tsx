@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getSessionUser } from "@/lib/session";
 import { syncPayment } from "@/lib/payment";
+import { registrarErro } from "@/lib/registrarErro";
 import { ClearCart } from "../ClearCart";
 import type { AddressData } from "@/schemas/addressSchema";
 
@@ -57,7 +58,7 @@ export default async function PedidoPage(props: PageProps<"/pedido/[resultado]">
     try {
       await syncPayment(paymentId);
     } catch (error) {
-      console.error("Erro ao consultar pagamento no Mercado Pago:", error);
+      await registrarErro(error, "retorno-pagamento", { pagamento: paymentId });
     }
   }
 

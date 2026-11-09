@@ -24,6 +24,15 @@
   --color-petroleo-escuro: #2B3840;
   --color-petroleo-claro: #5F7D8C;
   --color-petroleo-claro-escuro: #4E6A78;
+
+  /* Carrossel da faixa de vantagens. ✏️ Velocidade: mais segundos = mais devagar */
+  --animate-carrossel: carrossel 30s linear infinite;
+
+  /* Anda metade da largura total, ou seja, exatamente uma das 2 cópias */
+  @keyframes carrossel {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
 }
 
 /* Botão da loja: branco; ao passar o mouse fica vermelho neon e "brilha".
