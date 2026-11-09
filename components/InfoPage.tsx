@@ -27,7 +27,7 @@ export function InfoPage({
 export function InfoSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h2 className="text-xl font-semibold text-white mb-3">{title}</h2>
+      <h2 className="text-xl font-semibold text-forte mb-3">{title}</h2>
       <div className="space-y-3">{children}</div>
     </section>
   )

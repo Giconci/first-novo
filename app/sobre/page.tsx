@@ -45,7 +45,7 @@ export default function SobrePage() {
         <div className="grid sm:grid-cols-2 gap-4">
           {DIFERENCIAIS.map((d) => (
             <div key={d.titulo} className="rounded-lg bg-card p-5">
-              <p className="font-semibold text-white">{d.titulo}</p>
+              <p className="font-semibold text-forte">{d.titulo}</p>
               <p className="text-sm mt-1">{d.texto}</p>
             </div>
           ))}
@@ -66,11 +66,11 @@ export default function SobrePage() {
       </InfoSection>
 
       <InfoSection title="Nossa trajetória">
-        <ol className="border-l-2 border-white/20 pl-6 space-y-6">
+        <ol className="border-l-2 border-forte/20 pl-6 space-y-6">
           {MARCOS.map((m) => (
             <li key={m.ano} className="relative">
               <span className="absolute -left-[33px] top-1 h-4 w-4 rounded-full bg-neon" />
-              <p className="font-bold text-white">{m.ano}</p>
+              <p className="font-bold text-forte">{m.ano}</p>
               <p>{m.texto}</p>
             </li>
           ))}

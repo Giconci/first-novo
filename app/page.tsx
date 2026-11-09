@@ -47,7 +47,7 @@ function SectionTitle({ title, category }: { title: string; category: string }) 
       <h2 className="text-2xl font-bold">{title}</h2>
       <Link
         href={slug ? `/produtos?categoria=${slug}` : "/produtos"}
-        className="text-sm text-white hover:underline"
+        className="text-sm text-forte hover:underline"
       >
         Ver todos →
       </Link>
@@ -89,7 +89,7 @@ function ProductGrid({ products }: { products: Product[] }) {
             <h2 className="text-lg font-semibold">{product.name}</h2>
             <p className="text-sm text-muted-foreground">{product.description}</p>
             {/* Cinza petróleo claro (cores no app/globals.css) */}
-            <p className="text-lg font-bold text-white mt-2">
+            <p className="text-lg font-bold text-forte mt-2">
               R$ {product.price.toFixed(2)}
             </p>
 
@@ -150,17 +150,19 @@ export default async function HomePage() {
         />
       </div>
 
-      {/* Faixa da história: chama para a página /sobre */}
-      <section className="mt-12 bg-steam-escuro text-white rounded-lg mx-6 px-6 py-12 text-center">
-        <p className="text-sm uppercase tracking-widest text-white/60">Desde 2019</p>
+      {/* Faixa da história: chama para a página /sobre.
+          Fundo pérola e todas as letras em cinza escuro (cores no app/globals.css) */}
+      <section className="mt-12 bg-perola text-cinza-escuro rounded-lg mx-6 px-6 py-12 text-center">
+        <p className="text-sm uppercase tracking-widest">Desde 2019</p>
         <h2 className="text-2xl md:text-3xl font-bold mt-2">Feito em Curitiba, pensado pra durar</h2>
-        <p className="mt-3 text-white/80 max-w-xl mx-auto">
+        <p className="mt-3 max-w-xl mx-auto">
           Começamos com 50 bonés bordados numa garagem. Hoje enviamos para todo o Brasil,
           com o mesmo cuidado em cada peça.
         </p>
+        {/* Botão também pérola, com borda e letra cinza escuro; ao passar o mouse continua neon */}
         <Link
           href="/sobre"
-          className="inline-block mt-6 rounded-md btn-neon px-6 py-3 font-medium"
+          className="inline-block mt-6 rounded-md btn-neon border border-cinza-escuro px-6 py-3 font-medium [--btn-fundo:var(--color-perola)] [--btn-texto:var(--color-cinza-escuro)]"
         >
           Conheça nossa história
         </Link>

@@ -72,7 +72,7 @@ export default async function ProdutosPage({
         <Link
           href="/produtos"
           className={`px-4 py-2 rounded-full border text-sm ${
-            !current ? "bg-white text-steam-escuro" : "hover:bg-neon hover:border-neon hover:text-white"
+            !current ? "bg-steam-escuro text-white border-steam-escuro" : "hover:bg-neon hover:border-neon hover:text-white"
           }`}
         >
           Todos
@@ -83,7 +83,7 @@ export default async function ProdutosPage({
             href={`/produtos?categoria=${c.slug}`}
             className={`px-4 py-2 rounded-full border text-sm ${
               current?.slug === c.slug
-                ? "bg-white text-steam-escuro"
+                ? "bg-steam-escuro text-white border-steam-escuro"
                 : "hover:bg-neon hover:border-neon hover:text-white"
             }`}
           >

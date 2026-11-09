@@ -92,7 +92,7 @@ export default async function ProdutoPage({ params }: Props) {
         </div>
       )}
       <p className="text-foreground mb-2">{product.description}</p>
-      <p className="text-lg font-bold text-white mb-4">
+      <p className="text-lg font-bold text-forte mb-4">
         R$ {product.price.toFixed(2)}
       </p>
       <AddToCartButton product={toCartProduct(product)} soldOut={soldOut} />

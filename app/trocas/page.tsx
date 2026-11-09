@@ -50,7 +50,7 @@ export default function TrocasPage() {
       <InfoSection title="Produto com defeito">
         <p>
           Se chegou com defeito, a troca é sempre por nossa conta, em até 90 dias. Mande uma foto pelo{" "}
-          <Link href="/contato" className="underline text-white">contato</Link> que resolvemos rápido.
+          <Link href="/contato" className="underline text-forte">contato</Link> que resolvemos rápido.
         </p>
       </InfoSection>
     </InfoPage>

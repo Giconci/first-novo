@@ -84,7 +84,7 @@ export default function PrivacidadePage() {
         <p>
           Pela Lei Geral de Proteção de Dados, você pode pedir para ver, corrigir ou apagar seus
           dados a qualquer momento. É só falar com a gente pelo{" "}
-          <Link href="/contato" className="underline text-white">contato</Link>. Dados de
+          <Link href="/contato" className="underline text-forte">contato</Link>. Dados de
           pedidos podem ser mantidos pelo prazo exigido pela lei fiscal.
         </p>
       </InfoSection>

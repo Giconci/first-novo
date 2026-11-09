@@ -11,7 +11,7 @@ const buttonVariants = cva(
         // branco; vermelho neon ao passar o mouse (btn-neon fica no app/globals.css)
         default: "btn-neon",
         outline:
-          "border-white/40 bg-transparent text-white hover:bg-neon hover:border-neon hover:text-white aria-expanded:bg-muted aria-expanded:text-foreground",
+          "border-forte/40 bg-transparent text-forte hover:bg-neon hover:border-neon hover:text-white aria-expanded:bg-muted aria-expanded:text-foreground",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         ghost:

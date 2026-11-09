@@ -51,13 +51,13 @@ export default function DuvidasPage() {
       <div className="divide-y rounded-lg border bg-card">
         {PERGUNTAS.map((item) => (
           <details key={item.p} className="group p-5">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-white">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-forte">
               {item.p}
               <span className="text-xl transition group-open:rotate-45">+</span>
             </summary>
             <p className="mt-3">{item.r}</p>
             {item.link && (
-              <Link href={item.link.href} className="mt-2 inline-block underline text-white">
+              <Link href={item.link.href} className="mt-2 inline-block underline text-forte">
                 {item.link.texto}
               </Link>
             )}
@@ -67,7 +67,7 @@ export default function DuvidasPage() {
 
       <p className="text-center">
         Não achou o que procurava?{" "}
-        <Link href="/contato" className="underline text-white">Fale com a gente</Link>.
+        <Link href="/contato" className="underline text-forte">Fale com a gente</Link>.
       </p>
     </InfoPage>
   )

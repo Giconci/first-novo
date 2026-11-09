@@ -33,7 +33,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <body className="min-h-screen flex flex-col">
         <Providers>
           <NavBar />
-          <main className="p-6 flex-1">{children}</main>
+          <main className="fundo-branco p-6 flex-1">{children}</main>
           <Footer />
           <CookieBanner />
         </Providers>
