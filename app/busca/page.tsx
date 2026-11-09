@@ -17,21 +17,29 @@ type Product = {
 function BuscaContent() {
   const searchParams = useSearchParams();
   const q = searchParams.get("q") ?? "";
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(false);
+  // Guarda o resultado junto com a busca que o gerou.
+  // "Buscando..." = ainda não chegou o resultado da busca atual (não precisa de um estado "loading").
+  const [resultado, setResultado] = useState<{ q: string; products: Product[] } | null>(null);
+  const loading = q !== "" && resultado?.q !== q;
+  const products = resultado?.q === q ? resultado.products : [];
 
   useEffect(() => {
     if (!q) return;
-    setLoading(true);
+    let ativa = true; // se o cliente buscar outra coisa antes de chegar, ignora a resposta antiga
     fetch(`/api/busca?q=${encodeURIComponent(q)}`)
-      .then((res) => res.json())
-      .then(setProducts)
-      .finally(() => setLoading(false));
+      .then((res) => (res.ok ? res.json() : []))
+      .catch(() => []) // sem internet ou erro no servidor: mostra "Nenhum produto encontrado"
+      .then((lista: Product[]) => {
+        if (ativa) setResultado({ q, products: lista });
+      });
+    return () => {
+      ativa = false;
+    };
   }, [q]);
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Resultados para "{q}"</h1>
+      <h1 className="text-2xl font-bold mb-6">Resultados para &ldquo;{q}&rdquo;</h1>
 
       {loading ? (
         <p>Buscando...</p>
