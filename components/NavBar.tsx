@@ -106,10 +106,8 @@ export function NavBar() {
           </button>
         </>
       ) : (
-        <>
-          <Link href="/login" className={linkClass} onClick={close}>Login</Link>
-          <Link href="/cadastro" className={linkClass} onClick={close}>Cadastro</Link>
-        </>
+        // Só "Login": o link para criar conta ("Cadastre-se") fica dentro da página de login
+        <Link href="/login" className={linkClass} onClick={close}>Login</Link>
       )}
     </>
   )
