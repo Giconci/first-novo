@@ -25,7 +25,8 @@
   --color-petroleo-claro: #5F7D8C;
   --color-petroleo-claro-escuro: #4E6A78;
   --color-perola: #efeeeb;            /* ✏️ cinza pérola fosco bem suave (era #e4e2dd): cartões e faixa "Desde 2019" */
-  --color-cinza-escuro: #3a3f44;      /* ✏️ letras da faixa "Desde 2019" */
+  --color-cinza-escuro: #3a3f44;      /* ✏️ letras da faixa "Desde 2019" e do Quick Add */
+  --color-neon-claro: #ff5778;        /* ✏️ neon 25% mais claro: hover do Quick Add */
 
   /* Carrossel da faixa de vantagens. ✏️ Velocidade: mais segundos = mais devagar */
   --animate-carrossel: carrossel 30s linear infinite;
@@ -43,10 +44,11 @@
   background-color: var(--btn-fundo, #fff);
   color: var(--btn-texto, var(--color-steam-escuro));
   transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  /* --btn-hover: cor do hover (padrão: neon). O Quick Add usa o neon claro */
   &:hover {
-    background-color: var(--color-neon);
+    background-color: var(--btn-hover, var(--color-neon));
     color: #fff;
-    box-shadow: 0 0 8px var(--color-neon), 0 0 20px color-mix(in srgb, var(--color-neon) 60%, transparent);
+    box-shadow: 0 0 8px var(--btn-hover, var(--color-neon)), 0 0 20px color-mix(in srgb, var(--btn-hover, var(--color-neon)) 60%, transparent);
   }
 }
 

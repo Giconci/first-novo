@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import { prisma } from "@/lib/prisma"
-import { AddToCartButton, BarraCarrinhoMobile, QuickAddButton } from "@/components/AddToCartButton"
+import { QuickAddButton } from "@/components/AddToCartButton"
 import { toCartProduct } from "@/lib/cart"
 import { SITE_NAME } from "@/lib/site"
 
@@ -75,8 +75,7 @@ export default async function ProdutoPage({ params }: Props) {
   const cartProduct = toCartProduct(product)
 
   return (
-    // pb-28 no celular: espaço para a barra do carrinho (fixa no pé da tela) não cobrir o texto
-    <div className="p-6 pb-28 md:pb-6">
+    <div className="p-6">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
@@ -92,9 +91,10 @@ export default async function ProdutoPage({ params }: Props) {
             preload
             className="object-cover rounded"
           />
-          {/* Quick Add na foto (igual à home): celular sempre visível, computador ao passar o mouse */}
+          {/* Quick Add na foto: é o único botão de carrinho desta página,
+              por isso fica sempre visível (no celular e no computador) */}
           {!soldOut && (
-            <div className="absolute inset-0 flex md:hidden md:group-hover:flex items-center justify-center rounded md:bg-black/20">
+            <div className="absolute inset-0 flex items-center justify-center rounded">
               <QuickAddButton product={cartProduct} />
             </div>
           )}
@@ -105,13 +105,9 @@ export default async function ProdutoPage({ params }: Props) {
         R$ {product.price.toFixed(2)}
       </p>
 
-      {/* Computador: botão normal embaixo do preço */}
-      <div className="hidden md:block">
-        <AddToCartButton product={cartProduct} soldOut={soldOut} />
-      </div>
-
-      {/* Celular: barra fixa no pé da tela */}
-      <BarraCarrinhoMobile product={cartProduct} soldOut={soldOut} preco={formatBRL(product.price)} />
+      {/* Produto sem foto não tem onde pôr o Quick Add: ele aparece aqui embaixo do preço */}
+      {!product.imageUrl && !soldOut && <QuickAddButton product={cartProduct} />}
+      {soldOut && <p className="font-semibold text-muted-foreground">Esgotado</p>}
     </div>
   )
 }

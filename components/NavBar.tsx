@@ -153,7 +153,8 @@ export function NavBar() {
         </Link>
 
         {/* Marca da loja: no canto direito da tela, leva para a home */}
-        <Link href="/" className="text-xl font-bold tracking-widest text-white" onClick={close}>
+        {/* font-(family-name:--font-logo): fonte escrita à mão, definida no app/layout.tsx */}
+        <Link href="/" className="font-(family-name:--font-logo) text-2xl tracking-wide text-white" onClick={close}>
           CONCI
         </Link>
       </div>

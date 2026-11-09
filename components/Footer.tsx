@@ -42,7 +42,8 @@ export function Footer() {
     <footer className="bg-steam-escuro text-muted-foreground">
       <div className="max-w-6xl mx-auto px-6 py-12 grid gap-8 sm:grid-cols-2 md:grid-cols-4">
         <div>
-          <p className="text-2xl font-bold text-white tracking-widest">CONCI</p>
+          {/* Mesma fonte da logo da barra do topo (app/layout.tsx) */}
+          <p className="font-(family-name:--font-logo) text-3xl text-white tracking-wide">CONCI</p>
           <p className="mt-2 text-sm">Bonés e camisetas feitos em Curitiba.</p>
         </div>
 
