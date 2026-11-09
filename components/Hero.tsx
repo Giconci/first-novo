@@ -78,9 +78,11 @@ export default function Hero() {
       </div>
 
       {/* 🔹 Overlay com texto centralizado */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-white bg-black/30">
-        <h1 className="text-3xl md:text-5xl font-bold">Bem-vindo à nossa loja</h1>
-        <p className="mt-2 text-lg md:text-xl">loja Conci</p>
+      {/* font-(family-name:--font-logo): mesma fonte escrita à mão da logo (app/layout.tsx).
+          Sem font-bold: essa fonte só tem um peso, e o negrito "falso" borra as letras */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-white bg-black/30 font-(family-name:--font-logo)">
+        <h1 className="text-3xl md:text-5xl">Bem-vindo à nossa loja</h1>
+        <p className="mt-2 text-xl md:text-2xl">loja Conci</p>
       </div>
     </div>
   );
