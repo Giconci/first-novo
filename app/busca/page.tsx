@@ -3,6 +3,8 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { toCartProduct } from "@/lib/cart";
+import { QuickAddButton } from "@/components/AddToCartButton";
 
 type Product = {
   id: number;
@@ -38,11 +40,9 @@ function BuscaContent() {
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {products.map((p) => (
-            <Link
-              key={p.id}
-              href={`/produto/${p.id}`}
-              className="border border-transparent rounded-lg p-3" // borda invisível (para voltar: tire "border-transparent")
-            >
+            // Cartão = <div> com o link dentro (o Quick Add é botão, e botão não pode ficar dentro de link)
+            <div key={p.id} className="group relative border border-transparent rounded-lg p-3">
+            <Link href={`/produto/${p.id}`} className="block">
               {p.imageUrl && (
                 <div className="relative w-full h-40">
                   <Image
@@ -65,6 +65,16 @@ function BuscaContent() {
                 })}
               </p>
             </Link>
+
+            {/* Quick Add por cima da foto: celular sempre visível, computador ao passar o mouse */}
+            {p.imageUrl && (
+              <div className="pointer-events-none absolute inset-x-3 top-3 h-40 flex md:hidden md:group-hover:flex items-center justify-center rounded md:bg-black/20">
+                <div className="pointer-events-auto">
+                  <QuickAddButton product={toCartProduct({ ...p, description: null })} />
+                </div>
+              </div>
+            )}
+            </div>
           ))}
         </div>
       )}

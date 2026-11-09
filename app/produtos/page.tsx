@@ -4,6 +4,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { CATEGORIES } from "@/lib/categories";
 import { disponivel } from "@/lib/stock";
+import { toCartProduct } from "@/lib/cart";
+import { QuickAddButton } from "@/components/AddToCartButton";
 
 export const dynamic = "force-dynamic";
 
@@ -98,11 +100,12 @@ export default async function ProdutosPage({
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {products.map((p) => (
-            <Link
+            // O cartão é um <div> com o link dentro: o Quick Add é um botão, e botão não pode ficar dentro de link
+            <div
               key={p.id}
-              href={`/produto/${p.id}`}
-              className="group flex flex-col border border-transparent rounded-lg p-3" // borda invisível (para voltar: tire "border-transparent")
+              className="group relative flex flex-col border border-transparent rounded-lg p-3" // borda invisível (para voltar: tire "border-transparent")
             >
+            <Link href={`/produto/${p.id}`} className="flex flex-1 flex-col">
               {p.imageUrl ? (
                 <div className="relative w-full h-40">
                   <Image
@@ -130,6 +133,18 @@ export default async function ProdutosPage({
                 Ver produto
               </span>
             </Link>
+
+            {/* Quick Add por cima da foto (mesma altura h-40 e mesmo recuo p-3 do cartão):
+                celular → sempre visível; computador → ao passar o mouse.
+                pointer-events-none: clicar fora do botão ainda abre o produto */}
+            {p.imageUrl && (
+              <div className="pointer-events-none absolute inset-x-3 top-3 h-40 flex md:hidden md:group-hover:flex items-center justify-center rounded md:bg-black/20">
+                <div className="pointer-events-auto">
+                  <QuickAddButton product={toCartProduct(p)} />
+                </div>
+              </div>
+            )}
+            </div>
           ))}
         </div>
       )}
