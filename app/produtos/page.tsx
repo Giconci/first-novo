@@ -101,7 +101,7 @@ export default async function ProdutosPage({
             <Link
               key={p.id}
               href={`/produto/${p.id}`}
-              className="border border-transparent rounded-lg p-3" // borda invisível (para voltar: tire "border-transparent")
+              className="group flex flex-col border border-transparent rounded-lg p-3" // borda invisível (para voltar: tire "border-transparent")
             >
               {p.imageUrl ? (
                 <div className="relative w-full h-40">
@@ -117,12 +117,18 @@ export default async function ProdutosPage({
                 <div className="w-full h-40 bg-card rounded" />
               )}
               <h2 className="font-semibold mt-2">{p.name}</h2>
-              <p className="font-bold mt-1">
+              <p className="font-bold mt-1 mb-3">
                 {p.price.toLocaleString("pt-BR", {
                   style: "currency",
                   currency: "BRL",
                 })}
               </p>
+              {/* Parece botão, mas é parte do link: o cartão inteiro leva ao produto.
+                  mt-auto: fica sempre embaixo, alinhado mesmo com nomes de tamanhos diferentes.
+                  group-hover: o card inteiro acende o botão ao passar o mouse */}
+              <span className="btn-neon mt-auto self-start rounded-md px-4 py-2 text-sm font-medium group-hover:bg-neon group-hover:text-white">
+                Ver produto
+              </span>
             </Link>
           ))}
         </div>
