@@ -150,9 +150,17 @@ export function NavBar() {
           </span>
         </Link>
 
-        {/* Marca da loja: no canto direito da tela, leva para a home */}
-        {/* font-(family-name:--font-logo): fonte escrita à mão, definida no app/layout.tsx */}
-        <Link href="/" className="font-(family-name:--font-logo) text-2xl tracking-wide text-white" onClick={close}>
+        {/* Marca da loja: no canto direito da tela, leva para a home e sobe para o topo.
+            Já na home, o link não "navega" e a página ficaria parada: por isso o scrollTo.
+            font-(family-name:--font-logo): fonte escrita à mão, definida no app/layout.tsx */}
+        <Link
+          href="/"
+          className="font-(family-name:--font-logo) text-2xl tracking-wide text-white"
+          onClick={() => {
+            close()
+            window.scrollTo({ top: 0, behavior: "smooth" })
+          }}
+        >
           CONCI
         </Link>
       </div>
