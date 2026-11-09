@@ -20,7 +20,7 @@ const TECNOLOGIAS = [
 const COR_PAINEL = "#ffffff"
 
 // Topo da página: nome, cargo, botões e tecnologias, dentro de um painel fechado.
-// ✏️ O CV fica em public/sobre-nos/cvguilherme.pdf
+// ✏️ O CV fica em public/sobre-nos/CVGUI.pdf
 // 🎬 framer motion: troque <section> por <motion.section>
 export function Hero() {
   return (
@@ -69,8 +69,8 @@ export function Hero() {
                 Fale comigo
               </a>
               <a
-                href="/sobre-nos/cvguilherme.pdf"
-                download="cvguilherme.pdf"
+                href="/sobre-nos/CVGUI.pdf"
+                download="CVGUI.pdf"
                 target="_blank"
                 className="rounded-full border-2 border-current px-9 py-4 text-[19px] font-semibold md:text-[22px] transition hover:bg-black hover:text-(--painel)"
               >
