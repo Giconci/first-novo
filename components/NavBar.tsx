@@ -69,12 +69,7 @@ export function NavBar() {
           {open ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
         </button>
 
-        {/* Marca da loja: leva para a home */}
-        <Link href="/" className="text-xl font-bold tracking-widest text-white" onClick={close}>
-          CONCI
-        </Link>
-
-        {/* Links em linha só no computador */}
+        {/* Links em linha só no computador (o "Home" é o primeiro, colado à esquerda) */}
         <div className="hidden md:flex gap-4 items-center">{links}</div>
 
         {session && (
@@ -94,6 +89,11 @@ export function NavBar() {
           <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1">
             {count}
           </span>
+        </Link>
+
+        {/* Marca da loja: no canto direito da tela, leva para a home */}
+        <Link href="/" className="text-xl font-bold tracking-widest text-white" onClick={close}>
+          CONCI
         </Link>
       </div>
 
