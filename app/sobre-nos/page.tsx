@@ -3,6 +3,7 @@ import { Hero } from "./components/hero"
 import { About } from "./components/about"
 import { Projects } from "./components/projects"
 import { Contact } from "./components/contact"
+import { BotaoTopo } from "./components/botao-topo"
 export const metadata: Metadata = {
   title: "Sobre Nós",
   description: "Conheça Guilherme Luz Conci, desenvolvedor front-end por trás da Conci, e seus projetos.",
@@ -18,6 +19,8 @@ export default function SobreNosPage() {
       <About />
       <Projects />
       <Contact />
+      {/* Seta para voltar ao topo (aparece depois de rolar um pouco) */}
+      <BotaoTopo />
     </div>
   )
 }
