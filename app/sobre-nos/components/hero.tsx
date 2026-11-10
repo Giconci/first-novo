@@ -53,7 +53,7 @@ export function Hero() {
             <div className="mt-14 flex items-center gap-4">
               <span className="h-0.5 w-16 bg-current" />
               <h2 className="font-mono text-[19px] font-bold uppercase tracking-[0.2em] md:text-[22px]">
-               Desenvolvedor Full Stack especializado em Next.js, React e TypeScript. 
+                Desenvolvedor Full Stack especializado em Next.js, React e TypeScript
               </h2>
             </div>
 
