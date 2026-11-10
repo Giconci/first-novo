@@ -24,7 +24,11 @@ export function About() {
             Olá, meu nome é Guilherme.
           </h2>
           <p className={`mt-8 max-w-md leading-relaxed text-black/60 ${TEXTO}`}>
-            Tenho projetos executados e gostaria que o próximo seja o seu.
+            Desenvolvedor com experiência na criação de aplicações web modernas utilizando Next.js, 
+            TypeScript e PostgreSQL. 
+            Meu principal projeto é um e-commerce completo com autenticação,
+            processamento de pagamentos via Mercado Pago, 
+            gerenciamento de estoque e painel administrativo.
           </p>
 
           <dl className="mt-14">

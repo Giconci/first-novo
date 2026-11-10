@@ -53,12 +53,12 @@ export function Hero() {
             <div className="mt-14 flex items-center gap-4">
               <span className="h-0.5 w-16 bg-current" />
               <h2 className="font-mono text-[19px] font-bold uppercase tracking-[0.2em] md:text-[22px]">
-                Desenvolvedor Next.js Front-end
+               Desenvolvedor Full Stack especializado em Next.js, React e TypeScript. 
               </h2>
             </div>
 
             <p className="mt-8 max-w-xl text-[19px] leading-relaxed md:text-[22px]">
-              Sou um desenvolvedor front-end que ama criar coisas para a web: sites e aplicações web.
+              Desenvolvo aplicações web completas com autenticação, banco de dados, integrações de pagamento e deploy em produção.
             </p>
 
             <div className="mt-14 flex flex-wrap items-center gap-4">
