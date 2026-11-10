@@ -48,7 +48,9 @@
   &:hover {
     background-color: var(--btn-hover, var(--color-neon));
     color: #fff;
-    box-shadow: 0 0 8px var(--btn-hover, var(--color-neon)), 0 0 20px color-mix(in srgb, var(--btn-hover, var(--color-neon)) 60%, transparent);
+    /* Brilho em volta do botão, 80% mais fraco que o original (era 100% e 60%; agora 20% e 12%).
+       ✏️ Para mais brilho, aumente as porcentagens; para tirar, apague esta linha */
+    box-shadow: 0 0 8px color-mix(in srgb, var(--btn-hover, var(--color-neon)) 20%, transparent), 0 0 20px color-mix(in srgb, var(--btn-hover, var(--color-neon)) 12%, transparent);
   }
 }
 
