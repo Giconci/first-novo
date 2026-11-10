@@ -9,6 +9,7 @@ import { Search, X } from "lucide-react";
 const BANNERS = [
   "/images/banner2-desktop.jpg",
   "/images/jan-kopriva-An-PNdZ0gxw-unsplash.jpg",
+  "/images/kellen-riggin-ggiry79mUIw-unsplash.jpg",
 ];
 
 export default function Hero() {
