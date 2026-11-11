@@ -120,7 +120,7 @@ export default async function HomePage() {
           São 2 cópias iguais lado a lado. A faixa anda até o fim da 1ª cópia e recomeça,
           e como a 2ª está no mesmo lugar, o salto não aparece.
           Quem pediu ao computador para reduzir animações vê a faixa parada. */}
-      <div className="overflow-hidden bg-steam-escuro border-y">
+      <div className="overflow-hidden bg-marca border-y">
         <div className="flex w-max animate-carrossel motion-reduce:w-full motion-reduce:animate-none">
           {[0, 1].map((copia) => (
             <div

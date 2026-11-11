@@ -13,7 +13,8 @@
 @theme {
   /* Tema escuro estilo Steam (loja) */
   --color-steam-fundo: #1b2838;       /* fundo das páginas */
-  --color-steam-escuro: #171a21;      /* barra do topo, rodapé e faixas */
+  --color-steam-escuro: #171a21;      /* botões escuros e faixas das páginas de informação */
+  --color-marca: oklch(39.8% 0.07 227.392); /* ✏️ azul petróleo escuro: barra do topo, menu, faixa de vantagens e rodapé */
   --color-steam-painel: #232f3e;      /* cartões de produto, caixas */
   --color-steam-texto: #c7d5e0;       /* texto normal */
   --color-steam-fraco: #8f98a0;       /* texto secundário (descrições, legendas) */
@@ -226,7 +227,7 @@
 
   /* Dentro das áreas escuras (faixas, portfólio): as cores voltam a ser as de antes.
      O admin (tema-claro) fica de fora: lá os cartões já são brancos. */
-  .fundo-branco :is(.bg-steam-escuro, .bg-steam-painel, .bg-black):not(.tema-claro *) {
+  .fundo-branco :is(.bg-steam-escuro, .bg-marca, .bg-steam-painel, .bg-black):not(.tema-claro *) {
     --foreground: #c7d5e0;
     --forte: #ffffff;
     --muted-foreground: #8f98a0;

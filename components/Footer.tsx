@@ -39,7 +39,7 @@ export function Footer() {
   if (pathname.startsWith("/sobre-nos")) return null
 
   return (
-    <footer className="bg-steam-escuro text-muted-foreground">
+    <footer className="bg-marca text-muted-foreground">
       <div className="max-w-6xl mx-auto px-6 py-12 grid gap-8 sm:grid-cols-2 md:grid-cols-4">
         <div>
           {/* Mesma fonte da logo da barra do topo (app/layout.tsx) */}

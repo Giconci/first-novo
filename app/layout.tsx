@@ -1,6 +1,6 @@
 import "./globals.css"
 import type { Metadata } from "next"
-import { Geist, Permanent_Marker } from "next/font/google"
+import { Geist, Titan_One } from "next/font/google"
 import { cn } from "@/lib/utils"
 import { Providers } from "@/components/Providers"
 import { NavBar } from "@/components/NavBar"
@@ -9,9 +9,9 @@ import { CookieBanner } from "@/components/CookieBanner"
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
-// ✏️ Fonte da logo "CONCI" (escrita à mão, estilo pincel atômico). Para trocar, escolha outra em
-// fonts.google.com (categoria Handwriting) e troque o nome aqui e no import acima.
-const logo = Permanent_Marker({ weight: "400", subsets: ["latin"], variable: "--font-logo" })
+// ✏️ Fonte da logo "CONCI": Titan One (arredondada e bem grossa). Para trocar, escolha outra em
+// fonts.google.com e troque o nome aqui e no import acima.
+const logo = Titan_One({ weight: "400", subsets: ["latin"], variable: "--font-logo" })
 
 // SEO padrão do site. Cada página pode trocar o título;
 // o "template" coloca " | Conci" no fim sozinho (ex.: "Contato | Conci").

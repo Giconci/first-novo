@@ -67,7 +67,7 @@ export function NavBar() {
         </Link>
         {/* pt-2: "ponte" invisível entre o botão e a lista, para o mouse não perder o hover no caminho */}
         <div className="absolute left-0 top-full hidden pt-2 group-hover:block group-focus-within:block">
-          <div className="flex min-w-48 flex-col rounded-md border border-white/10 bg-steam-escuro py-2 shadow-lg">
+          <div className="flex min-w-48 flex-col rounded-md border border-white/10 bg-marca py-2 shadow-lg">
             {opcoesProdutos.map((o) => (
               <Link
                 key={o.href}
@@ -114,9 +114,9 @@ export function NavBar() {
 
   return (
     // sticky top-0: a barra gruda no topo e acompanha a rolagem
-    // bg-steam-escuro/60: 40% transparente; backdrop-blur: desfoca o que passa por baixo (efeito vidro)
+    // bg-marca/60: 40% transparente; backdrop-blur: desfoca o que passa por baixo (efeito vidro)
     // z-50: fica por cima do conteúdo da página
-    <nav className="sticky top-0 z-50 border-b p-4 bg-steam-escuro/60 backdrop-blur-md">
+    <nav className="sticky top-0 z-50 border-b p-4 bg-marca/60 backdrop-blur-md">
       <div className="flex gap-4 items-center">
         {/* ☰ só no celular */}
         <button
@@ -152,7 +152,7 @@ export function NavBar() {
 
         {/* Marca da loja: no canto direito da tela, leva para a home e sobe para o topo.
             Já na home, o link não "navega" e a página ficaria parada: por isso o scrollTo.
-            font-(family-name:--font-logo): fonte escrita à mão, definida no app/layout.tsx */}
+            font-(family-name:--font-logo): fonte da logo (Titan One), definida no app/layout.tsx */}
         <Link
           href="/"
           className="font-(family-name:--font-logo) text-2xl tracking-wide text-white"
